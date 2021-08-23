@@ -1,0 +1,76 @@
+#bg {
+  background-image: url("../img/bg.jpg");
+}
+
+.welcome {
+  width: 100%;
+  margin-left: 25%;
+}
+
+.form-aing {
+  border: none;
+  width: 100%;
+  height: 100%;
+  color: grey;
+}
+.jdl {
+  width: 50%;
+}
+.hurufKecil {
+  font-size: 0.9em;
+}
+
+@media print {
+  @page {
+    /* margin-left: 80px;
+      margin-right: -140px;
+      font-size: 10px; */
+  }
+
+  .noprint {
+    display: none;
+  }
+
+  .navbar-nav {
+    display: none;
+  }
+
+  #debug-icon-link {
+    display: none;
+  }
+}
+
+#debug-icon {
+  display: none;
+}
+
+#debug-icon-link {
+  display: none;
+}
+
+.huruf {
+  font-size: 32px;
+}
+
+.kwit {
+  border: solid black 3px;
+  padding: 5px;
+}
+
+.kwitMod {
+  width: 80%;
+  float: right;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+
+.aKwit {
+  color: lightgrey;
+  padding-left: 10px;
+  font-size: 14px;
+}
+
+.aKwit:hover {
+  text-decoration: none;
+  color: white;
+}
