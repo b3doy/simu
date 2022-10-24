@@ -13,9 +13,12 @@ echo $this->section('content');
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>No Mitra</th>
                         <th>Tanggal Jatuh Tempo</th>
                         <th>Angsuran Ke</th>
                         <th>Nama Konsumen</th>
+                        <th>Angsuran</th>
+                        <th>Sisa Os</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -41,7 +44,7 @@ echo $this->section('content');
         },
         "columnDefs": [{
             "targets": [0],
-            "orderable": false
+            "orderable": true
         }]
     });
 </script>

@@ -18,7 +18,7 @@ foreach ($akun as $akun) {
                     <a href="<?= base_url('/kwitansi/kwitansiperjanjian'); ?>" class="btn btn-secondary" role="button"><i class="fa fa-undo"></i> Kembali</a>
                 </div>
             </div>
-            <form action="<?= base_url('/kwitansi/print'); ?>" method="POST">
+            <form action="<?= base_url('/kwitansi/printKwitansiPerjanjian'); ?>" method="POST">
                 <div class="card" style="width: 100%;">
                     <div class="card-body">
                         <div class="kwit">
@@ -44,7 +44,17 @@ foreach ($akun as $akun) {
                                             <td>Nama Barang</td>
                                             <td>:&nbsp</td>
                                             <td>
-                                                <?= $konsumen['nama_barang1'] . $konsumen['nama_barang2'] . $konsumen['nama_barang3'] . $konsumen['nama_barang4']; ?>
+                                                <?php
+                                                if ($konsumen['nama_barang2'] == null && $konsumen['nama_barang3'] == null && $konsumen['nama_barang4'] == null) {
+                                                    echo $konsumen['nama_barang1'];
+                                                } else if ($konsumen['nama_barang2'] != null && $konsumen['nama_barang3'] == null && $konsumen['nama_barang4'] == null) {
+                                                    echo $konsumen['nama_barang1'] . ', ' . $konsumen['nama_barang2'];
+                                                } else if ($konsumen['nama_barang2'] != null && $konsumen['nama_barang3'] != null && $konsumen['nama_barang4'] == null) {
+                                                    echo $konsumen['nama_barang1'] . ', ' . $konsumen['nama_barang2'] . ', ' . $konsumen['nama_barang3'];
+                                                } else if ($konsumen['nama_barang2'] != null && $konsumen['nama_barang3'] != null && $konsumen['nama_barang4'] != null) {
+                                                    echo $konsumen['nama_barang1'] . ', ' . $konsumen['nama_barang2'] . ', ' . $konsumen['nama_barang3'] . ', ' . $konsumen['nama_barang4'];
+                                                }
+                                                ?>
                                             </td>
                                         </tr>
                                         <tr>
@@ -61,11 +71,10 @@ foreach ($akun as $akun) {
                                 </div>
                             </div>
                         </div>
-                        <!-- <hr style="height: 5px; color:black;"> -->
                         <div class="kwit">
                             <h1 class="card-title text-center fw-bold">KWITANSI</h1>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col">
                                     <table class="table-sm huruf">
                                         <tr>
                                             <td>Terima Dari</td>
@@ -73,17 +82,17 @@ foreach ($akun as $akun) {
                                             <td><input type="text" name="nama_konsumen" class="form-aing" value="<?= $konsumen['nama_konsumen']; ?>" readonly></td>
                                         </tr>
                                         <tr>
-                                            <td class="jdl">Angsuran Ke</td>
+                                            <td>Pasangan</td>
+                                            <td>:&nbsp</td>
+                                            <td><input type="text" name="nama_pasangan" class="form-aing" value="<?= $konsumen['nama_pasangan']; ?>" readonly></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Angsuran Ke</td>
                                             <td>:&nbsp</td>
                                             <td><input type="text" name="angsuran_ke" class="form-aing" value="01" readonly></td>
                                         </tr>
-
-                                    </table>
-                                </div>
-                                <div class="col-md-6">
-                                    <table class="table-sm huruf">
                                         <tr>
-                                            <td style="width:85%">Jatuh Tempo Setiap Tanggal</td>
+                                            <td class="jdl">Jatuh Tempo Setiap Tanggal</td>
                                             <td>:&nbsp</td>
                                             <td>
                                                 <input type="text" name="jt" class="form-aing" value="<?php
@@ -100,10 +109,6 @@ foreach ($akun as $akun) {
                                             <td>:&nbsp</td>
                                             <td><?= $konsumen['tenor']; ?></td>
                                         </tr>
-                                    </table>
-                                </div>
-                                <div class=" col">
-                                    <table class="table-sm huruf">
                                         <tr>
                                             <td>Jumlah Uang</td>
                                             <td>:&nbsp</td>
@@ -113,7 +118,6 @@ foreach ($akun as $akun) {
                                 </div>
                             </div>
                         </div>
-                        <!-- <hr style="height:3px; color:black;"> -->
                         <div class="kwit">
                             <table class="table table-bordered huruf">
                                 <thead>
@@ -162,6 +166,7 @@ foreach ($akun as $akun) {
                         </div>
                     </div>
                 </div>
+                <input type="hidden" name="user_print" value="<?= user()->username ?>">
                 <div class=" noprint card-footer">
                     <button type="submit" class="btn btn-success" onclick="window.print()"><i class="fa fa-print"></i> Print</button>
                 </div>

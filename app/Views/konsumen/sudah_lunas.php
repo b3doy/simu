@@ -15,9 +15,8 @@ foreach ($akun as $akun) {
                         <th scope="col">#</th>
                         <th scope="col">No Akun / Mitra</th>
                         <th scope="col">Nama</th>
-                        <!-- <th scope="col">Tanggal Angsuran 1</th> -->
-                        <!-- <th scope="col">Tanggal Jatuh Tempo</th> -->
                         <th scope="col">Angsuran</th>
+                        <th scope="col">Sisa Os</th>
                         <th scope="col" class="noprint">Pilihan</th>
                     </tr>
                 </thead>

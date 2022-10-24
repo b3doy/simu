@@ -5,7 +5,7 @@
 
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
-            <img src="<?= base_url(); ?>/public/assets/img/mbz.png" style="width: 180px;" class="mt-5" alt="logo">
+            <img src="<?= base_url(); ?>/public/assets/img/mbz.png" style="width: 100%;" class="mt-5" alt="logo">
 
         </a>
 
@@ -19,20 +19,33 @@
                 <span>Home</span></a>
         </li>
 
-        <!-- Data Pegawai -->
-        <?php if (user()->username == 'owner') : ?>
-            <!-- <li class="nav-item">
+        <!-- Data User SIMU -->
+        <?php
+
+        use App\Controllers\Users;
+
+        if (in_groups('Superuser') || in_groups('Administrator')) : ?>
+            <li class="nav-item">
                 <a class="nav-link" href="<?= base_url('/users'); ?>">
                     <i class="fas fa-fw fa-users"></i>
                     <span>Users</span></a>
-            </li> -->
-
+            </li>
+            <!-- Data Pegawai -->
             <li class="nav-item">
                 <a class="nav-link" href="<?= base_url('/pegawai'); ?>">
                     <i class="fas fa-fw fa-users"></i>
                     <span>Data Pegawai</span></a>
             </li>
         <?php endif; ?>
+
+        <!-- Data Surveyor -->
+        <?php if (in_groups('Superuser') || in_groups('Administrator') || in_groups('Surveyor')) : ?>
+            <li class="nav-item">
+                <a class="nav-link" href="<?= base_url('/surveyor'); ?>">
+                    <i class="fas fa fa-users"></i>
+                    <span>Data Surveyor</span></a>
+            </li>
+        <?php endif ?>
 
         <!-- Data Konsumen -->
         <li class="nav-item">
@@ -43,6 +56,10 @@
             <div id="collapseKonsumen" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="<?= base_url('/konsumen'); ?>">Data Konsumen</a>
+                    <?php if (in_groups('Superuser') || in_groups('Administrator') || in_groups('Surveyor') || in_groups('Admin')) : ?>
+                        <a class="collapse-item" href="<?= base_url('/konsumen/status_approval'); ?>">Status Approval</a>
+                    <?php endif ?>
+                    <a class="collapse-item" href="<?= base_url('/konsumen/rejected'); ?>">Konsumen Ditolak</a>
                     <a class="collapse-item" href="<?= base_url('/konsumen/akan_lunas'); ?>">Konsumen Akan Lunas</a>
                     <a class="collapse-item" href="<?= base_url('/konsumen/sudah_lunas'); ?>">Konsumen Sudah Lunas</a>
                     <a class="collapse-item" href="<?= base_url('/konsumen/dpd'); ?>">Konsumen DPD</a>
@@ -52,14 +69,16 @@
         </li>
 
         <!-- Berita Acara -->
-        <li class="nav-item">
-            <a class="nav-link" href="<?= base_url('/berita_acara'); ?>">
-                <i class="fas fa-fw fa-book"></i>
-                <span>Berita Acara</span></a>
-        </li>
+        <?php if (in_groups('Superuser') || in_groups('Administrator') || in_groups('Admin')) : ?>
+            <li class="nav-item">
+                <a class="nav-link" href="<?= base_url('/berita_acara'); ?>">
+                    <i class="fas fa-fw fa-book"></i>
+                    <span>Berita Acara</span></a>
+            </li>
+        <?php endif ?>
 
         <!-- Kwitansi di Menu Owner -->
-        <?php if (user()->username == 'owner') : ?>
+        <?php if (in_groups('Superuser') || in_groups('Administrator') || in_groups('Admin')) : ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKwitansi" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-money"></i>
@@ -69,84 +88,41 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="<?= base_url('/kwitansi/kwitansiperjanjian'); ?>">Kwitansi Angsuran 1</a>
                         <a class="collapse-item" href="<?= base_url('/kwitansi'); ?>">Kwitansi Berikutnya</a>
+                        <a class="collapse-item" href="<?= base_url('/kwitansi/kwitansipelunasan'); ?>">Kwitansi Pelunasan</a>
                     </div>
                 </div>
             </li>
-        <?php endif; ?>
-
-        <!-- Kwitansi di Menu != Owner -->
-        <?php if (user()->username != 'owner') : ?>
-            <li class="nav-item bg-dark">
-                <a class="nav-link collapsed" href="#" data-toggle="collapsed" data-target="#collapseKwitansi" aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-money"></i>
-                    <span>Kwitansi</span>
-                </a>
-                <div id="collapseKwitansi" class="" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-dark py-2 kwitMod mb-1">
-                        <a class="collapse-item aKwit" href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop0">Kwitansi Angsuran 1</a>
-                        <!-- Modal -->
-                        <div class="modal fade" id="staticBackdrop0" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <h5>Silahkan Masukkan Password Untuk Melanjutkan</h5>
-                                        <input type="password" id="password0" name="password0" class="form-control" onkeyup="sandi()">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary" id="lanjutkan0" data-bs-dismiss="modal">Lanjutkan</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-dark py-2 kwitMod">
-                        <a class="collapse-item aKwit" href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Kwitansi</a>
-                        <!-- Modal -->
-                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <h5>Silahkan Masukkan Password Untuk Melanjutkan</h5>
-                                        <input type="password" id="password" name="password" class="form-control" onkeyup="kataSandi()">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary" id="lanjutkan" data-bs-dismiss="modal">Lanjutkan</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </li>
-        <?php endif; ?>
+        <?php endif ?>
 
         <!-- Tagihan Perbulan -->
-        <li class="nav-item">
-            <a class="nav-link" href="<?= base_url('/tagihan'); ?>">
-                <i class="fas fa-fw fa-money-bill-alt"></i>
-                <span>Tagihan Perbulan</span></a>
-        </li>
+        <?php if (in_groups('Superuser') || in_groups('Administrator') || in_groups('Admin') || in_groups('Collector')) : ?>
+            <li class="nav-item">
+                <a class="nav-link" href="<?= base_url('/tagihan'); ?>">
+                    <i class="fas fa-fw fa-money-bill-alt"></i>
+                    <span>Tagihan Perbulan</span></a>
+            </li>
+        <?php endif ?>
 
         <!-- Report -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsereport" aria-expanded="true" aria-controls="collapseTwo">
-                <i class="fas fa-fw fa-list"></i>
-                <span>Report</span>
-            </a>
-            <div id="collapsereport" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="<?= base_url('/report/input_data'); ?>">Laporan Input Data</a>
-                    <a class="collapse-item" href="<?= base_url('/report/data_total'); ?>">Laporan Data Total</a>
-                    <a class="collapse-item" href="<?= base_url('/report/kwitansi_print'); ?>">Laporan Print Kwitansi</a>
+        <?php if (in_groups('Superuser') || in_groups('Administrator') || in_groups('Admin')) : ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsereport" aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-list"></i>
+                    <span>Report</span>
+                </a>
+                <div id="collapsereport" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="<?= base_url('/report/input_data'); ?>">Laporan Input Data</a>
+                        <a class="collapse-item" href="<?= base_url('/report/input_transaksi'); ?>">Laporan Input Transaksi</a>
+                        <a class="collapse-item" href="<?= base_url('/report/data_total'); ?>">Laporan Data Total</a>
+                        <a class="collapse-item" href="<?= base_url('/report/data_aktif'); ?>">Laporan Data Aktif</a>
+                        <a class="collapse-item" href="<?= base_url('/report/uang_masuk'); ?>">Laporan Uang Masuk</a>
+                        <a class="collapse-item" href="<?= base_url('/report/kwitansi_print'); ?>">Laporan Print Kwitansi</a>
+                        <a class="collapse-item" href="<?= base_url('/report/sisa_kwitansi'); ?>">Laporan Sisa Kwitansi</a>
+                    </div>
                 </div>
-            </div>
-        </li>
+            </li>
+        <?php endif ?>
 
         <!-- Divider -->
         <hr class="sidebar-divider">

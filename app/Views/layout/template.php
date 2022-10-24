@@ -27,19 +27,41 @@
         </symbol>
     </svg>
 
+    <script>
+        // Time out Variables
+        var timeOut = 180000
+        var logOut = "<?= base_url('logout') ?>"
+        var timerOut
+
+        // Start Timer
+        function startTimers() {
+            timerOut = setTimeout("idleTimeOut()", timeOut)
+        }
+
+        // Reset Timer
+        function resetTimer() {
+            clearTimeout(timerOut)
+            startTimers()
+        }
+
+        // Logout User
+        function idleTimeOut() {
+            window.location = logOut
+        }
+    </script>
 
     <title><?= $title; ?></title>
 
 </head>
 
-<body>
+<body onload="startTimers()" onmousemove="resetTimer()">
 
     <?php
     echo $this->include('layout/navbar1');
     echo $this->renderSection('content');
     ?>
 
-    <!-- <script src="<?= base_url(); ?>..\assets\js\bootstrap.bundle.min.js"></script> -->
+
     <script src="<?= base_url(); ?>/public/assets/js/jquery-3.0.6.js"></script>
     <script src="<?= base_url(); ?>/public/assets/js/jquery.maskMoney.min.js"></script>
     <script src="<?= base_url(); ?>/public/assets/js/jquery.mask.min.js"></script>

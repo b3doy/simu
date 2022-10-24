@@ -10,18 +10,8 @@ class AkunModel extends Model
     protected $useTimestamps = true;
     protected $useSoftDeletes = true;
     protected $allowedFields = [
-        'no_akun',
-        'nama_konsumen',
-        'telpon',
-        'tanggal',
-        'no_ba',
-        'simpan',
-        'ambil',
-        'saldo',
-        'sisa_os',
-        'angsuran_ke',
-        'keterangan',
-        'konsumen_id'
+        'no_akun', 'nama_konsumen', 'telpon', 'tanggal', 'no_ba', 'simpan', 'ambil', 'saldo', 'sisa_os', 'diskon',
+        'angsuran_ke', 'collector', 'keterangan', 'user_input', 'konsumen_id'
     ];
 
     public function getAkun($id = false)
@@ -43,9 +33,19 @@ class AkunModel extends Model
         return $this->db->table('akun')->join('konsumen', 'konsumen.id = akun.konsumen_id')->where('konsumen.id', $id)->get()->getResultArray();
     }
 
+    public function getIndexAkun($id)
+    {
+        return $this->db->table('akun')->select('*')->where('konsumen_id', $id)->get()->getResultArray();
+    }
+
+    public function getEditAkun($id)
+    {
+        return $this->db->table('akun')->select('*')->get()->getResultArray();
+    }
+
     public function getBa($no_ba)
     {
-        return $this->db->table('akun')->join('konsumen', 'konsumen.id = akun.konsumen_id')->where('no_ba', $no_ba)->get()->getResultArray();
+        return $this->db->table('akun')->join('konsumen', 'konsumen.id = akun.konsumen_id')->where('no_ba', $no_ba)->orderBy('tanggal', 'ASC')->get()->getResultArray();
     }
 
     public function search($cari)
@@ -78,11 +78,20 @@ class AkunModel extends Model
     public function setJT($id)
     {
         return $this->db->table('akun')->join('konsumen', 'konsumen.id = akun.konsumen_id')->where('konsumen_id', $id)->selectMax('angsuran_ke')->get()->getRowArray()['angsuran_ke'];
-        // return $this->db->table('akun')->selectMax('angsuran_ke')->get()->getRowArray()['angsuran_ke'];
     }
 
     public function getJT()
     {
         return $this->db->table('akun')->select('angsuran_ke')->get()->getResult();
+    }
+
+    public function inputTransaksiTable()
+    {
+        return $this->db->table('akun')->select('akun.*, konsumen.nama_konsumen as nama')->join('konsumen', 'konsumen.id = akun.konsumen_id')->get()->getResult();
+    }
+
+    public function UangMasukTable()
+    {
+        return $this->db->table('akun')->select('*')->join('konsumen', 'konsumen.id = akun.konsumen_id')->get()->getResult();
     }
 }

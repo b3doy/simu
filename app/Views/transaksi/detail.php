@@ -45,13 +45,7 @@ error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
                             </tr>
                         </thead>
                         <tbody>
-                            <?php for ($i = 0; $i < count($akun); $i++) :
-
-                                // $setoran = $konverter->des4($akun[$i]['setoran']);
-                                // $tarikan = $konverter->des4($akun[$i]['tarikan']);
-                                // $saldo = $konverter->des4($akun[$i]['saldo']);
-
-                            ?>
+                            <?php for ($i = 0; $i < count($akun); $i++) : ?>
                                 <tr>
                                     <td><?= $akun[$i]['no_akun']; ?></td>
                                     <td><?= date('d/m/Y ; H:i', strtotime($akun[$i]['tanggal'])); ?></td>

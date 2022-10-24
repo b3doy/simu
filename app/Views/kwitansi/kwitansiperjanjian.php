@@ -13,9 +13,11 @@ echo $this->section('content');
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>No Mitra</th>
                         <th>Tanggal Angsuran ke-1</th>
                         <th>angsuran_ke</th>
                         <th>Nama Konsumen</th>
+                        <th>Angsuran</th>
                         <th>Action</th>
                     </tr>
                 </thead>

@@ -19,7 +19,6 @@ echo $this->section('content');
                         <th>Angsuran</th>
                         <th>Tenor</th>
                         <th>Sisa OS</th>
-                        <!-- <th></th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -46,13 +45,6 @@ echo $this->section('content');
 <script src="<?= base_url(); ?>/public/assets/js/sum.js"></script>
 <script src="<?= base_url(); ?>/public/assets/js/my.js"></script>
 <script>
-    // jQuery.fn.dataTable.Api.register('sum()', function() {
-    //     return this.flatten().reduce(function(a, b) {
-    //         var x = parseFloat(a) || 0;
-    //         var y = parseFloat($(b).attr('data-order')) || 0;
-    //         return x + y
-    //     }, 0);
-    // });
     var table = $('#dataTotalTable').DataTable({
         "order": [],
         "processing": true,
@@ -72,7 +64,6 @@ echo $this->section('content');
             // Remove the formatting to get integer data for summation
             var intVal = function(i) {
                 return typeof i === 'string' ?
-                    // i.replace(/[\$,]/g, '') * 1 :
                     parseInt(i.split('Rp.').join('').split('.').join('')) * 1 :
                     typeof i === 'number' ?
                     i : 0;
@@ -89,7 +80,6 @@ echo $this->section('content');
             pageTotal = api
                 .column(6, {
                     page: 'current'
-                    // search: 'applied'
                 })
                 .data()
                 .reduce(function(a, b) {
@@ -113,7 +103,6 @@ echo $this->section('content');
             pageTotal = api
                 .column(3, {
                     page: 'current'
-                    // search: 'applied'
                 })
                 .data()
                 .reduce(function(c, d) {

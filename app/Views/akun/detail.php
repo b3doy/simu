@@ -35,7 +35,15 @@ foreach ($akun as $a) {
                         <tr>
                             <td>Tanggal Jatuh Tempo Perbulan</td>
                             <td>:</td>
-                            <th><?= $konsumen['tanggal_angsuran2'][8] . $konsumen['tanggal_angsuran2'][9]; ?></th>
+                            <th>
+                                <?php
+                                if ($konsumen['tanggal_angsuran2'] != 0) {
+                                    echo $konsumen['tanggal_angsuran2'][8] . $konsumen['tanggal_angsuran2'][9];
+                                } else {
+                                    echo $konsumen['tanggal_angsuran1'][8] . $konsumen['tanggal_angsuran1'][9];
+                                }
+                                ?>
+                            </th>
                         </tr>
                     </table>
                     <hr>
@@ -46,8 +54,6 @@ foreach ($akun as $a) {
                                 <th>Simpan</th>
                                 <th>Ambil</th>
                                 <th>Saldo</th>
-                                <!-- <th>Sisa Os</th>
-                                <th>Angsuran Ke</th> -->
                                 <th>Keterangan</th>
                             </tr>
                         </thead>
@@ -73,40 +79,6 @@ foreach ($akun as $a) {
                                             ?>
                                         </td>
                                     <?php endif; ?>
-                                    <!-- <?php if ($akun[$i] != $akun[0]) : ?>
-                                        <td>
-                                            <?php
-                                                $dp = $konsumen['dp'];
-                                                $angsuran = $konsumen['angsuran'];
-                                                $dpAngs = $dp + $angsuran;
-                                                if ($akun[$i]['simpan'] == $akun[$i]['angsuran']) {
-                                                    $akun[$i]['sisa_os'] = ($akun[$i - 1]['sisa_os']) - ($akun[$i]['simpan']);
-                                                    $sisaOs = $konverter->rupiah02($akun[$i]['sisa_os']);
-                                                    echo $sisaOs;
-                                                } else if ($akun[$i]['simpan'] == $dpAngs) {
-                                                    $akun[$i]['sisa_os'] = ($akun[$i - 1]['sisa_os']) - ($akun[$i]['simpan'] - $konsumen['dp']);
-                                                    $sisaOs = $konverter->rupiah02($akun[$i]['sisa_os']);
-                                                    echo $sisaOs;
-                                                } else if (($akun[$i]['simpan'] > $akun[$i]['angsuran']) && ($akun[$i]['simpan'] != $dpAngs)) {
-                                                    $akun[$i]['sisa_os'] = ($akun[$i - 1]['sisa_os']) - ($akun[$i]['ambil']);
-                                                    $sisaOs = $konverter->rupiah02($akun[$i]['sisa_os']);
-                                                    echo $sisaOs;
-                                                } else if (($akun[$i]['simpan'] < $akun[$i]['angsuran'])) {
-                                                    $akun[$i]['sisa_os'] = ($akun[$i - 1]['sisa_os']) - ($akun[$i]['ambil']);
-                                                    $sisaOs = $konverter->rupiah02($akun[$i]['sisa_os']);
-                                                    echo $sisaOs;
-                                                }
-                                            ?>
-                                        </td>
-                                    <?php elseif ($akun[$i] == $akun[0]) : ?>
-                                        <td>
-                                            <?php
-                                                $osAwal = $konverter->rupiah02($akun[0]['sisa_os']);
-                                                echo $osAwal;
-                                            ?>
-                                        </td>
-                                    <?php endif; ?>
-                                    <td><?= $akun[$i]['angsuran_ke']; ?></td> -->
                                     <td><?= $akun[$i]['keterangan']; ?></td>
                                 </tr>
                             <?php endfor; ?>
@@ -118,24 +90,28 @@ foreach ($akun as $a) {
             <?php foreach ($akun as $akun) {
             } ?>
             <!-- Pilihan Method Delete, Buat Akun, Tambah Transaksi -->
+            <!-- Hapus Akun -->
             <form action="<?= base_url('/akun/' . $akun['konsumen_id']); ?>" method="POST" class="d-inline noprint">
                 <?= csrf_field(); ?>
                 <input type="hidden" name="_method" value="DELETE">
-                <button type="submit" class="btn btn-danger mt-3 noprint" onclick="return confirm('Apakah Anda Yakin Akan Menghapus Data Ini?');"><i class="fa fa-trash"></i> Hapus Akun</button>
+                <button type="submit" class="btn btn-sm btn-danger mt-3 noprint" onclick="return confirm('Apakah Anda Yakin Akan Menghapus Data Ini?');"><i class="fa fa-trash"></i> Hapus Akun</button>
             </form>
-            <!-- <a href="<?php if ($akun['no_akun'] != null) {
-                                echo base_url('/akun/kembali');
-                            } else {
-                                echo base_url('/akun/create/' . $konsumen['id']);
-                            }
-                            ?>" class="btn btn-outline-primary mt-3 mx-3"><i class="fa fa-book"></i> Buat Akun</a> -->
+            <!-- Tambah Transaksi -->
             <a href="<?php if ($akun['no_akun'] != null) {
                             echo base_url('/transaksi/create/' . $akun['id']);
                         } else {
                             echo base_url('/transaksi/kembali');
-                        } ?>" class="btn btn-outline-success mt-3 mx-3 noprint"><i class="fa fa-money"></i> Tambah Transaksi</a>
-            <a href="<?= base_url('/akun/riwayat/' . $akun['id']); ?>" class="btn btn-outline-info mt-3 noprint"><i class="fa fa-search"></i> Lihat Riwayat Pembayaran</a>
-            <button class="btn btn-success noprint mt-3 ms-3" onclick="window.print()"><i class="fa fa-print"></i> Print</button>
+                        } ?>" class="btn btn-sm btn-outline-success mt-3 mx-3 noprint"><i class="fa fa-money"></i> Tambah Transaksi</a>
+            <!-- Riwayat Pembayaran -->
+            <a href="<?= base_url('/akun/riwayat/' . $akun['id']); ?>" class="btn btn-sm btn-outline-info mt-3 noprint"><i class="fa fa-search"></i> Lihat Riwayat Pembayaran</a>
+            <!-- Pelunasan Dipercepat -->
+            <a href="<?= base_url('/pelunasan/index/' . $akun['id']); ?>" class="btn btn-sm btn-outline-dark mt-3 mx-3 noprint"><i class="fa fa-money"></i> Pelunasan Dipercepat</a>
+            <!-- Print -->
+            <button class="btn btn-sm btn-success noprint mt-3" onclick="window.print()"><i class="fa fa-print"></i> Print</button>
+            <!-- Edit Transaksi -->
+            <?php if (user()->username == 'owner' || user()->username == 'CEO') : ?>
+                <button class="btn btn-sm btn-warning mt-3 mx-3 noprint"><a href="<?= base_url('/transaksi/index/' . $akun['id']); ?>"><i class="fa fa-pencil"></i> Edit Transaksi</a></button>
+            <?php endif; ?>
         </div>
     </div>
 </div>

@@ -32,7 +32,7 @@
         <div class="container">
             <a class="navbar-brand">SIMU-1.0</a>
             <form class="d-flex">
-                <a class="navbar-brand nav-link" href="<?= base_url(); ?>/login">Login</a>
+                <a class="navbar-brand nav-link" href="<?= base_url('login'); ?>">Login</a>
             </form>
         </div>
     </nav>

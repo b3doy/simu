@@ -45,7 +45,7 @@ foreach ($akun as $akun) {
                 <div class="mb-3">
                     <label for="tanggal" class="form-label">Tanggal</label>
                     <input type="datetime" style="display: none;" class="form-control" name="tanggal" id="tanggal" value="<?php date_default_timezone_set('Asia/Jakarta');
-                                                                                                                            echo date('Y/m/d'); ?>" readonly>
+                                                                                                                            echo date('Y/m/d H:i:s'); ?>" readonly>
                     <input type="datetime" class="form-control" id="tgl" name="tgl" value="<?php date_default_timezone_set('Asia/Jakarta');
                                                                                             echo date('d/m/Y', strtotime(date('Y/m/d'))); ?>" readonly>
 
@@ -55,37 +55,39 @@ foreach ($akun as $akun) {
                 </div>
                 <div class="mb-3">
                     <label for="no_ba" class="form-label">No Berita Acara</label>
-                    <input type="number" class="form-control" id="no_ba" name="no_ba">
+                    <input type="text" class="form-control" id="no_ba" name="no_ba">
                 </div>
                 <div class="mb-3">
                     <label for="simpan" class="form-label">Simpan</label>
-                    <input type="text" class="form-control angka3 <?= ($validation->hasError('simpan')) ? 'is-invalid' : ''; ?>" id="simpan" name="simpan" value="<?= old('simpan'); ?>" onkeyup="hitungAmbil()">
+                    <input type="text" class="form-control angka4 <?= ($validation->hasError('simpan')) ? 'is-invalid' : ''; ?>" id="simpan" name="simpan" value="<?= old('simpan'); ?>" onkeyup="hitungAmbil()">
                     <div id="validationServer03Feedback" class="invalid-feedback">
                         <?= $validation->getError('simpan'); ?>
                     </div>
                 </div>
-                <input type="hidden" class="form-control" id="angsuran" name="angsuran" value="<?= $konverter->rupiah02($konsumen['angsuran']); ?>">
-                <input type="hidden" class="form-control" id="os" name="os" value="<?= $konverter->rupiah02($konsumen['os']); ?>">
-                <input type="hidden" class="form-control" id="sisa_os0" name="sisa_os0" value="<?= $konverter->rupiah02($akun['sisa_os']); ?>">
+                <input type="hidden" class="form-control" id="angsuran" name="angsuran" value="<?= ($konsumen['angsuran']); ?>">
+                <input type="hidden" class="form-control" id="os" name="os" value="<?= ($konsumen['os']); ?>">
+                <input type="hidden" class="form-control" id="sisa_os0" name="sisa_os0" value="<?= ($akun['sisa_os']); ?>">
                 <input type="hidden" class="form-control" id="tenor" name="tenor" value="<?= $konsumen['tenor']; ?>">
-                <input type="hidden" class="form-control" id="simpan_sebelumnya" name="simpan_sebelumnya" value="<?= $konverter->rupiah02($akun['simpan']); ?>">
-                <input type="hidden" class="form-control" id="ambil_sebelumnya" name="ambil_sebelumnya" value="<?= $konverter->rupiah02($akun['ambil']); ?>">
-                <input type="hidden" class="form-control" id="saldo_sebelumnya" name="saldo_sebelumnya" value="<?= $konverter->rupiah02($akun['saldo']); ?>">
-                <input type="hidden" class="form-control" id="dp" name="dp" value="<?= $konverter->rupiah02($konsumen['dp']); ?>">
+                <input type="hidden" class="form-control" id="simpan_sebelumnya" name="simpan_sebelumnya" value="<?= ($akun['simpan']); ?>">
+                <input type="hidden" class="form-control" id="ambil_sebelumnya" name="ambil_sebelumnya" value="<?= ($akun['ambil']); ?>">
+                <input type="hidden" class="form-control" id="saldo_sebelumnya" name="saldo_sebelumnya" value="<?= ($akun['saldo']); ?>">
+                <input type="hidden" class="form-control" id="dp" name="dp" value="<?= ($konsumen['dp']); ?>">
+                <input type="hidden" class="form-control" id="angsuran_ke_sebelumnya" name="angsuran_ke_sebelumnya" value="<?= ($akun['angsuran_ke']); ?>">
                 <input type="hidden" class="form-control" id="sisa_os" name="sisa_os">
                 <input type="hidden" class="form-control" id="test1" name="test1">
                 <input type="hidden" class="form-control" id="test2" name="test2">
                 <input type="hidden" class="form-control" id="test3" name="test3">
+                <input type="hidden" class="form-control" id="total_simpan" name="total_simpan">
                 <div class="mb-3">
                     <label for="ambil" class="form-label">Ambil</label>
-                    <input type="text" class="form-control angka3 <?= ($validation->hasError('ambil')) ? 'is-invalid' : ''; ?>" id="ambil" name="ambil" value="<?= old('ambil'); ?>" onkeyup="hitungAmbil()" readonly>
+                    <input type="text" class="form-control angka4 <?= ($validation->hasError('ambil')) ? 'is-invalid' : ''; ?>" id="ambil" name="ambil" value="<?= old('ambil'); ?>" onkeyup="hitungAmbil()" readonly>
                     <div id="validationServer03Feedback" class="invalid-feedback">
                         <?= $validation->getError('ambil'); ?>
                     </div>
                 </div>
                 <div class="mb-3">
                     <label for="saldo" class="form-label">Saldo</label>
-                    <input type="text" class="form-control angka3 <?= ($validation->hasError('saldo')) ? 'is-invalid' : ''; ?>" id="saldo" name="saldo" value="<?= old('saldo'); ?>" onkeyup="hitungAmbil()" readonly>
+                    <input type="text" class="form-control angka4 <?= ($validation->hasError('saldo')) ? 'is-invalid' : ''; ?>" id="saldo" name="saldo" value="<?= old('saldo'); ?>" onkeyup="hitungAmbil()" readonly>
                     <div id="validationServer03Feedback" class="invalid-feedback">
                         <?= $validation->getError('saldo'); ?>
                     </div>
@@ -98,10 +100,20 @@ foreach ($akun as $akun) {
                     </div>
                 </div>
                 <div class="mb-3">
+                    <label for="collector" class="form-label">Collector</label>
+                    <select name="collector" id="collector" class="form-control">
+                        <option value="">----- Silahkan Pilih Nama Collector -----</option>
+                        <?php foreach ($pegawai as $pegawai) : ?>
+                            <option value="<?= $pegawai['nama_pegawai']; ?>"><?= $pegawai['nama_pegawai']; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="mb-3">
                     <label for="keterangan" class="form-label">Keterangan</label>
                     <textarea name="keterangan" id="keterangan" class="form-control"><?= old('keterangan'); ?></textarea>
                 </div>
                 <input type="hidden" name="konsumen_id" value="<?= $akun['konsumen_id']; ?>">
+                <input type="hidden" name="user_input" value="<?= user()->username; ?>">
                 <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane"></i> Simpan</button>
             </form>
         </div>
@@ -110,168 +122,140 @@ foreach ($akun as $akun) {
 
 <script>
     function hitungAmbil() {
-        var rp = "Rp. "
-
-        var simp = document.getElementById('simpan').value
-        var simp1 = simp.split('Rp.').join('').split('.').join('')
-
-        var angs = document.getElementById('angsuran').value
-        var angs1 = angs.split('Rp.').join('').split('.').join('')
-
-        var dp = document.getElementById('dp').value
-        var dp1 = dp.split('Rp.').join('').split('.').join('')
-
-        var dpAngs = rp + (parseInt(angs1) + parseInt(dp1)) + ',00'
-        var dpAngs1 = dpAngs.split('Rp.').join('').split('.').join('')
-
+        var os = document.getElementById('os').value
+        var angsuran = document.getElementById('angsuran').value
+        var tenor = document.getElementById('tenor').value
+        var sisaOsSebelumnya = document.getElementById('sisa_os0').value
         var simpanSebelumnya = document.getElementById('simpan_sebelumnya').value
-        var simpanSebelumnya1 = simpanSebelumnya.split('Rp.').join('').split('.').join('')
-
         var ambilSebelumnya = document.getElementById('ambil_sebelumnya').value
-        var ambilSebelumnya1 = ambilSebelumnya.split('Rp.').join('').split('.').join('')
-
         var saldoSebelumnya = document.getElementById('saldo_sebelumnya').value
-        var saldoSebelumnya1 = saldoSebelumnya.split('Rp.').join('').split('.').join('')
+        var dp = document.getElementById('dp').value
+        var dpAngsuran = parseInt(dp) + parseInt(angsuran)
+        document.getElementById('test1').value = dpAngsuran
 
-        var jmlSimp = (parseInt(simp1) + parseInt(saldoSebelumnya1))
-        var jmlSimp01 = rp + desimal(jmlSimp) + ',00'
-        var jmlSimpanan = jmlSimp01.split('Rp.').join('').split('.').join('')
+        var simpan = document.getElementById('simpan').value
+        var simpan1 = simpan.split('.').join('')
+        var totalSimpan = parseInt(saldoSebelumnya) + parseInt(simpan1)
+        document.getElementById('total_simpan').value = totalSimpan
 
-        // Menghitung jumlah yang di ambil (debet) dari tabungan untuk angsuran
-        if (jmlSimpanan > angs1 && jmlSimpanan < dpAngs1) {
-            if (simpanSebelumnya1 == " 0,00" && ambilSebelumnya1 == " 0,00" && saldoSebelumnya1 == " 0,00") {
-                document.getElementById('ambil').value = rp + desimal(simp1)
-            } else {
-                document.getElementById('ambil').value = rp + desimal(angs1)
-            }
-        } else if (jmlSimpanan >= dpAngs1) {
-            if (simpanSebelumnya1 == " 0,00" && ambilSebelumnya1 == " 0,00" && saldoSebelumnya1 == " 0,00") {
-                document.getElementById('ambil').value = rp + desimal(dpAngs1)
-            } else {
-                document.getElementById('ambil').value = rp + desimal(angs1)
-            }
-        } else if (jmlSimpanan == angs1) {
-            document.getElementById('ambil').value = jmlSimp01
-        } else if (jmlSimpanan < angs1) {
+        // Menghitung Ambil Untuk Angsuran
+        if (totalSimpan < angsuran) {
             document.getElementById('ambil').value = 0
+        } else if (totalSimpan == angsuran) {
+            if (simpanSebelumnya == 0 && ambilSebelumnya == 0 && saldoSebelumnya == 0 && dp != 0) {
+                document.getElementById('ambil').value = 0
+                // document.getElementById('ambil').value = desimal(simpan1)
+            } else if (simpanSebelumnya == 0 && ambilSebelumnya == 0 && saldoSebelumnya == 0 && dp == 0) {
+                document.getElementById('ambil').value = desimal(totalSimpan)
+            } else {
+                document.getElementById('ambil').value = desimal(totalSimpan)
+            }
+        } else if (totalSimpan >= dpAngsuran) {
+            if (simpanSebelumnya == 0 && ambilSebelumnya == 0 && saldoSebelumnya == 0) {
+                document.getElementById('ambil').value = desimal(dpAngsuran)
+            } else {
+                document.getElementById('ambil').value = desimal(parseInt(angsuran))
+            }
+        } else if (totalSimpan > angsuran && totalSimpan < dpAngsuran) {
+            if (simpanSebelumnya == 0 && ambilSebelumnya == 0 && saldoSebelumnya == 0) {
+                document.getElementById('ambil').value = 0
+            } else {
+                document.getElementById('ambil').value = desimal(parseInt(angsuran))
+            }
         }
-
-        var ambil = document.getElementById("ambil").value
-        var ambil1 = ambil.split("Rp.").join("").split(".").join("")
 
         // Menghitung Saldo
-        var htgSaldo = parseInt(jmlSimpanan) - parseInt(ambil1)
-        document.getElementById('saldo').value = rp + (desimal(htgSaldo)) + ",00"
+        var ambil = document.getElementById('ambil').value
+        var ambil1 = ambil.split('.').join('')
 
-        var tenor = document.getElementById('tenor').value
+        var saldo = parseInt(totalSimpan) - parseInt(ambil1)
+        document.getElementById('saldo').value = desimal(saldo)
 
-        var os0 = document.getElementById('os').value
-        var os = os0.split('Rp.').join('').split('.').join('')
-
-        var sisaOs0 = document.getElementById('sisa_os0').value
-        var sisaOs1 = sisaOs0.split('Rp.').join('').split('.').join('')
-
-        // Menghitung Sisa OS untuk menentukan Angsuran Keberapa
-        if (ambil1 == angs1) {
-            var sisaOs2 = parseInt(sisaOs1) - parseInt(ambil1) // KONDISI REAL SEHINGGA MASIH ADA SALDO APABILA NANTI ADA KEKURANGAN ANGSURAN 
-            var sisaOs = rp + desimal(sisaOs2) + ',00'
-            var sisaOsNya = sisaOs.split('Rp.').join('').split('.').join('')
-            document.getElementById('sisa_os').value = sisaOsNya
-        } else {
-            var sisaOs2 = parseInt(sisaOs1) - parseInt(angs1)
-            var sisaOs = rp + desimal(sisaOs2) + ',00'
-            var sisaOsNya = sisaOs.split('Rp.').join('').split('.').join('')
-            document.getElementById('sisa_os').value = sisaOsNya
+        // Menghitung Sisa OS
+        if (totalSimpan < angsuran) {
+            var sisaOs = parseInt(sisaOsSebelumnya) - parseInt(ambil)
+            document.getElementById('sisa_os').value = sisaOs
+        } else if (totalSimpan == angsuran) {
+            if (simpanSebelumnya == 0 && ambilSebelumnya == 0 && saldoSebelumnya == 0) {
+                var sisaOs = parseInt(sisaOsSebelumnya) - parseInt(ambil1)
+                document.getElementById('sisa_os').value = sisaOs
+            } else {
+                var sisaOs = parseInt(sisaOsSebelumnya) - parseInt(angsuran)
+                document.getElementById('sisa_os').value = sisaOs
+            }
+        } else if (totalSimpan >= dpAngsuran) {
+            if (simpanSebelumnya == 0 && ambilSebelumnya == 0 && saldoSebelumnya == 0) {
+                var sisaOs = parseInt(sisaOsSebelumnya) - parseInt(angsuran)
+                document.getElementById('sisa_os').value = sisaOs
+            } else {
+                var sisaOs = parseInt(sisaOsSebelumnya) - parseInt(angsuran)
+                document.getElementById('sisa_os').value = sisaOs
+            }
+        } else if (totalSimpan > angsuran && totalSimpan < dpAngsuran) {
+            if (simpanSebelumnya == 0 && ambilSebelumnya == 0 && saldoSebelumnya == 0) {
+                var sisaOs = parseInt(sisaOsSebelumnya) - parseInt(ambil1)
+                document.getElementById('sisa_os').value = sisaOs
+            } else {
+                var sisaOs = parseInt(sisaOsSebelumnya) - parseInt(angsuran)
+                document.getElementById('sisa_os').value = sisaOs
+            }
         }
 
-        // var sisaOs = rp + desimal(sisaOs2) + ',00'
-        // var sisaOsNya = sisaOs.split('Rp.').join('').split('.').join('')
-        // document.getElementById('sisa_os').value = sisaOsNya
+        var angsuranKeSebelumnya0 = document.getElementById('angsuran_ke_sebelumnya').value
+        var angsuranKeSebelumnya = parseInt(angsuranKeSebelumnya0)
 
         // Menentukan Angsuran Keberapa
-        var dpAngsuranKe1 = rp + (parseInt(os) - parseInt(dpAngs1)) + ',00'
-        var dpAngsuranKe01 = dpAngsuranKe1.split('Rp.').join('').split('.').join('')
+        var dpAngsuranKe1 = parseInt(os) - parseInt(dpAngsuran)
+        var angsuranKe1 = (parseInt(os) - parseInt(angsuran))
+        var angsuranKe2 = (parseInt(os) - (2 * parseInt(angsuran)))
+        var angsuranKe3 = (parseInt(os) - (3 * parseInt(angsuran)))
+        var angsuranKe4 = (parseInt(os) - (4 * parseInt(angsuran)))
+        var angsuranKe5 = (parseInt(os) - (5 * parseInt(angsuran)))
+        var angsuranKe6 = (parseInt(os) - (6 * parseInt(angsuran)))
+        var angsuranKe7 = (parseInt(os) - (7 * parseInt(angsuran)))
+        var angsuranKe8 = (parseInt(os) - (8 * parseInt(angsuran)))
+        var angsuranKe9 = (parseInt(os) - (9 * parseInt(angsuran)))
+        var angsuranKe10 = (parseInt(os) - (10 * parseInt(angsuran)))
+        var angsuranKe11 = (parseInt(os) - (11 * parseInt(angsuran)))
+        var angsuranKe12 = (parseInt(os) - (12 * parseInt(angsuran)))
+        var angsuranKe13 = (parseInt(os) - (13 * parseInt(angsuran)))
+        var angsuranKe14 = (parseInt(os) - (14 * parseInt(angsuran)))
+        var angsuranKe15 = (parseInt(os) - (15 * parseInt(angsuran)))
 
-        var angsuranKe1 = rp + (parseInt(os) - parseInt(angs1)) + ',00'
-        var angsuranKe01 = angsuranKe1.split('Rp.').join('').split('.').join('')
-
-        var angsuranKe2 = rp + (parseInt(os) - (2 * parseInt(angs1))) + ',00'
-        var angsuranKe02 = angsuranKe2.split('Rp.').join('').split('.').join('')
-
-        var angsuranKe3 = rp + (parseInt(os) - (3 * parseInt(angs1))) + ',00'
-        var angsuranKe03 = angsuranKe3.split('Rp.').join('').split('.').join('')
-
-        var angsuranKe4 = rp + (parseInt(os) - (4 * parseInt(angs1))) + ',00'
-        var angsuranKe04 = angsuranKe4.split('Rp.').join('').split('.').join('')
-
-        var angsuranKe5 = rp + (parseInt(os) - (5 * parseInt(angs1))) + ',00'
-        var angsuranKe05 = angsuranKe5.split('Rp.').join('').split('.').join('')
-
-        var angsuranKe6 = rp + (parseInt(os) - (6 * parseInt(angs1))) + ',00'
-        var angsuranKe06 = angsuranKe6.split('Rp.').join('').split('.').join('')
-
-        var angsuranKe7 = rp + (parseInt(os) - (7 * parseInt(angs1))) + ',00'
-        var angsuranKe07 = angsuranKe7.split('Rp.').join('').split('.').join('')
-
-        var angsuranKe8 = rp + (parseInt(os) - (8 * parseInt(angs1))) + ',00'
-        var angsuranKe08 = angsuranKe8.split('Rp.').join('').split('.').join('')
-
-        var angsuranKe9 = rp + (parseInt(os) - (9 * parseInt(angs1))) + ',00'
-        var angsuranKe09 = angsuranKe9.split('Rp.').join('').split('.').join('')
-
-        var angsuranKe10 = rp + (parseInt(os) - (10 * parseInt(angs1))) + ',00'
-        var angsuranKe010 = angsuranKe10.split('Rp.').join('').split('.').join('')
-
-        var angsuranKe11 = rp + (parseInt(os) - (11 * parseInt(angs1))) + ',00'
-        var angsuranKe011 = angsuranKe11.split('Rp.').join('').split('.').join('')
-
-        var angsuranKe12 = rp + (parseInt(os) - (12 * parseInt(angs1))) + ',00'
-        var angsuranKe012 = angsuranKe12.split('Rp.').join('').split('.').join('')
-
-        var angsuranKe13 = rp + (parseInt(os) - (13 * parseInt(angs1))) + ',00'
-        var angsuranKe013 = angsuranKe13.split('Rp.').join('').split('.').join('')
-
-        var angsuranKe14 = rp + (parseInt(os) - (14 * parseInt(angs1))) + ',00'
-        var angsuranKe014 = angsuranKe14.split('Rp.').join('').split('.').join('')
-
-        var angsuranKe15 = rp + (parseInt(os) - (15 * parseInt(angs1))) + ',00'
-        var angsuranKe015 = angsuranKe15.split('Rp.').join('').split('.').join('')
-
-        if (sisaOsNya == dpAngsuranKe01) {
+        if (sisaOs == angsuranKe1) {
             document.getElementById('angsuran_ke').value = '1'
-        } else if (sisaOsNya == angsuranKe01) {
-            document.getElementById('angsuran_ke').value = '1'
-        } else if (sisaOsNya == angsuranKe02) {
+        } else if (sisaOs == angsuranKe2) {
             document.getElementById('angsuran_ke').value = '2'
-        } else if (sisaOsNya == angsuranKe03) {
+        } else if (sisaOs == angsuranKe3) {
             document.getElementById('angsuran_ke').value = '3'
-        } else if (sisaOsNya == angsuranKe04) {
+        } else if (sisaOs == angsuranKe4) {
             document.getElementById('angsuran_ke').value = '4'
-        } else if (sisaOsNya == angsuranKe05) {
+        } else if (sisaOs == angsuranKe5) {
             document.getElementById('angsuran_ke').value = '5'
-        } else if (sisaOsNya == angsuranKe06) {
+        } else if (sisaOs == angsuranKe6) {
             document.getElementById('angsuran_ke').value = '6'
-        } else if (sisaOsNya == angsuranKe07) {
+        } else if (sisaOs == angsuranKe7) {
             document.getElementById('angsuran_ke').value = '7'
-        } else if (sisaOsNya == angsuranKe08) {
+        } else if (sisaOs == angsuranKe8) {
             document.getElementById('angsuran_ke').value = '8'
-        } else if (sisaOsNya == angsuranKe09) {
+        } else if (sisaOs == angsuranKe9) {
             document.getElementById('angsuran_ke').value = '9'
-        } else if (sisaOsNya == angsuranKe010) {
+        } else if (sisaOs == angsuranKe10) {
             document.getElementById('angsuran_ke').value = '10'
-        } else if (sisaOsNya == angsuranKe011) {
+        } else if (sisaOs == angsuranKe11) {
             document.getElementById('angsuran_ke').value = '11'
-        } else if (sisaOsNya == angsuranKe012) {
+        } else if (sisaOs == angsuranKe12) {
             document.getElementById('angsuran_ke').value = '12'
-        } else if (sisaOsNya == angsuranKe013) {
+        } else if (sisaOs == angsuranKe13) {
             document.getElementById('angsuran_ke').value = '13'
-        } else if (sisaOsNya == angsuranKe014) {
+        } else if (sisaOs == angsuranKe14) {
             document.getElementById('angsuran_ke').value = '14'
-        } else if (sisaOsNya == angsuranKe015) {
+        } else if (sisaOs == angsuranKe15) {
             document.getElementById('angsuran_ke').value = '15'
         } else {
             document.getElementById('angsuran_ke').value = ' '
         }
+
     }
 </script>
 

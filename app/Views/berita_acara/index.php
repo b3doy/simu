@@ -13,6 +13,7 @@
                         <th>#</th>
                         <th>Tanggal</th>
                         <th>No Berita Acara</th>
+                        <th>Petugas</th>
                         <th>Action</th>
                     </tr>
                 </thead>

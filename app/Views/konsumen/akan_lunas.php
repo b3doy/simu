@@ -64,7 +64,6 @@ foreach ($akun as $akun) {
             // Remove the formatting to get integer data for summation
             var intVal = function(i) {
                 return typeof i === 'string' ?
-                    // i.replace(/[\$,]/g, '') * 1 :
                     parseInt(i.split('Rp.').join('').split('.').join('')) * 1 :
                     typeof i === 'number' ?
                     i : 0;
@@ -105,7 +104,6 @@ foreach ($akun as $akun) {
             pageTotal = api
                 .column(6, {
                     page: 'current'
-                    // search: 'applied'
                 })
                 .data()
                 .reduce(function(c, d) {

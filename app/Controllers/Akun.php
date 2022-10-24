@@ -44,7 +44,7 @@ class Akun extends BaseController
 
     public function save()
     {
-        $sql = $this->akunModel->save([
+        $sql = [
             'no_akun' => $this->request->getVar('no_akun'),
             'nama_konsumen' => $this->request->getVar('nama_konsumen'),
             'telpon' => $this->request->getVar('telpon'),
@@ -57,7 +57,16 @@ class Akun extends BaseController
             'angsuran_ke' => $this->request->getVar('angsuran_ke'),
             'keterangan' => $this->request->getVar('keterangan'),
             'konsumen_id' => $this->request->getVar('konsumen_id')
-        ]);
+        ];
+
+        $this->akunModel->save($sql);
+
+        $status_akun = [
+            'id'          => $this->request->getVar('konsumen_id'),
+            'status_akun' => $this->request->getVar('status_akun')
+        ];
+        $this->konsumenModel->save($status_akun);
+
 
         if ($sql) {
             session()->setFlashData('pesanBerhasil', 'Akun Baru Berhasil Dibuat.');
@@ -84,6 +93,16 @@ class Akun extends BaseController
 ?>
         <script>
             alert('Data Akun Sudah Ada!');
+            window.location.href = "<?= base_url('/konsumen'); ?>"
+        </script>
+    <?php
+    }
+
+    public function status()
+    {
+    ?>
+        <script>
+            alert('Status BELUM Approved!');
             window.location.href = "<?= base_url('/konsumen'); ?>"
         </script>
     <?php

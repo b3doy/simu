@@ -7,6 +7,12 @@ use App\Models\KonsumenModel;
 
 class Konverter
 {
+    protected $konsumenModel;
+
+    public function __construct()
+    {
+        $this->konsumenModel = new KonsumenModel();
+    }
 
     function rupiah($angka)
     {
@@ -23,6 +29,12 @@ class Konverter
     function angka($angka)
     {
         $format_angka = number_format($angka, 0, ',', '.');
+        return $format_angka;
+    }
+
+    function angka1($angka)
+    {
+        $format_angka = number_format($angka, 0, ',', ',');
         return $format_angka;
     }
 
@@ -71,26 +83,29 @@ class Konverter
     function des4($des4)
     {
         $nilai_str = preg_replace("/[^\d-]+/", "", $des4);
-        $nilai_des3 = ((int)$nilai_str) / 100;
-        return $nilai_des3;
+        $nilai_des4 = ((int)$nilai_str) / 100;
+        return $nilai_des4;
     }
 
     function randcode($length)
     {
-        $num = '0123456789';
-        $hrf = 'MBZ-';
+        $konsumen = $this->konsumenModel->getKonsumen();
+        foreach ($konsumen as $konsumen) {
+            $hurufDepan = $konsumen['nama_konsumen'][0];
+            $num = '0123456789';
+            $hrf = $hurufDepan;
 
-        for ($i = 0; $i < $length; $i++) {
-            $rNum = rand(0, strlen($num) - 1);
-            $hrf .= $num[$rNum];
+            for ($i = 0; $i < $length; $i++) {
+                $rNum = rand(0, strlen($num) - 1);
+                $hrf .= $num[$rNum];
+            }
         }
         return $hrf;
     }
 
     function kodeMitra()
     {
-        $konsumenModel = new KonsumenModel();
-        $kode = $konsumenModel->setCode();
+        $kode = $this->konsumenModel->setCode();
         $urutan = (int) substr($kode, -4, 4);
         $urutan++;
         $angkaTetap = '18071304-';
@@ -106,7 +121,7 @@ class Konverter
         if ($nilai < 12) {
             $temp = " " . $huruf[$nilai];
         } else if ($nilai < 20) {
-            $temp = $this->$this->penyebut($nilai - 10) . " Belas";
+            $temp = $this->penyebut($nilai - 10) . " Belas";
         } else if ($nilai < 100) {
             $temp = $this->penyebut($nilai / 10) . " Puluh" . $this->penyebut($nilai % 10);
         } else if ($nilai < 200) {

@@ -6,8 +6,6 @@ use App\Libraries\Konverter;
 use App\Models\AkunModel;
 use App\Models\KonsumenModel;
 use App\Models\KwitansiModel;
-use Config\Services;
-use PhpParser\Node\Stmt\Echo_;
 
 date_default_timezone_set('Asia/Jakarta');
 
@@ -54,27 +52,32 @@ class Tagihan extends BaseController
             $tgl_jt_berikutnya = date('Y/m/d', strtotime((string)'+' . ($angsuran_ke - 1) . ' month', strtotime($tgl_angsuran)));
             $tgl_jt_berikutnya1 = strtotime($tgl_jt_berikutnya);
             $bln_jt_berikutnya = $tgl_jt_berikutnya[5] . $tgl_jt_berikutnya[6] . '/' . $tgl_jt_berikutnya[0] . $tgl_jt_berikutnya[1] . $tgl_jt_berikutnya[2] . $tgl_jt_berikutnya[3];
-            $tgl_bayar_terakhir1 = strtotime($tgl_bayar_terakhir);
 
-            $jt = strtotime($list->tanggal_jt);
-            $tgl_jt = date('d', strtotime($list->tanggal_jt));
             $bulan_ini = date('m/Y');
             $hari_ini = time();
             $dpd = ($hari_ini - $tgl_jt_berikutnya1) / 86400; // 86400 = jumlah detik dalam 1 hari (24 jam)
             if ($hari_ini >= $tgl_jt_berikutnya1 && $list->angsuran_ke != 0 || $bulan_ini == $bln_jt_berikutnya) {
-                $no++;
-                $row = array();
-                $row[] = $no;
-                $row[] = date('d M Y', strtotime($tgl_jt_berikutnya));
-                $row[] = $list->no_mitra;
-                $row[] = $list->nama_konsumen;
-                $row[] = $this->konverter->rupiah02($list->angsuran);
-                $row[] = $angsuran_ke;
-                $row[] = intval($dpd) . ' Hari';
-                $row[] = $this->konverter->rupiah02($list->sisa_os);
-                $row[] = '';
+                if ($list->sisa_os != 0) {
+                    $no++;
+                    $row = array();
+                    $row[] = $no;
+                    $row[] = date('d-M-Y', strtotime($tgl_jt_berikutnya));
+                    $row[] = date('d-M-Y', strtotime($tgl_bayar_terakhir));
+                    $row[] = $list->no_mitra;
+                    $row[] = $list->nama_konsumen;
+                    if ($list->tanggal_angsuran2 != 0) {
+                        $row[] = $list->tanggal_angsuran2[8] . $list->tanggal_angsuran2[9];
+                    } else {
+                        $row[] = $list->tanggal_angsuran1[8] . $list->tanggal_angsuran1[9];
+                    }
+                    $row[] = $this->konverter->angka1($list->angsuran);
+                    $row[] = $angsuran_ke;
+                    $row[] = intval($dpd) . ' Hari';
+                    $row[] = $this->konverter->angka1($list->saldo);
+                    $row[] = $this->konverter->angka1($list->sisa_os);
 
-                $data[] = $row;
+                    $data[] = $row;
+                }
             }
         }
         $output = [

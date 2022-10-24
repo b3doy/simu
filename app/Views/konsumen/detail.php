@@ -25,19 +25,13 @@ foreach ($akun as $akun) {
             <div class="card" style="width: 80%; background-color:beige;">
                 <div class="card-body">
                     <h3 class="card-title text-center fw-bolder"><?= $konsumen['nama_konsumen']; ?></h3>
+                    <h4 class="card-title text-center fw-bolder"><?= $konsumen['nama_panggilan']; ?></h4>
                     <table class="table table-borderless">
                         <tr>
                             <td>No Mitra</td>
                             <td> : </td>
                             <th>
                                 <h5 class="card-subtitle fw-bold"><?= $konsumen['no_mitra']; ?></h5>
-                            </th>
-                        </tr>
-                        <tr>
-                            <td>No Hp</td>
-                            <td> : </td>
-                            <th>
-                                <p class="card-text"><?= $konsumen['telpon']; ?></p>
                             </th>
                         </tr>
                         <tr>
@@ -48,10 +42,87 @@ foreach ($akun as $akun) {
                             </th>
                         </tr>
                         <tr>
-                            <td>Alamat</td>
+                            <td>Tanggal Lahir</td>
+                            <td> : </td>
+                            <th>
+                                <p class="card-text"><?= date('d-M-Y', strtotime($konsumen['tgl_lahir'])); ?></p>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Nama Ibu Kandung</td>
+                            <td> : </td>
+                            <th>
+                                <p class="card-text"><?= $konsumen['ibu_kandung']; ?></p>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>No Hp</td>
+                            <td> : </td>
+                            <th>
+                                <p class="card-text"><?= $konsumen['telpon']; ?></p>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Pekerjaan</td>
+                            <td> : </td>
+                            <th>
+                                <p class="card-text"><?= $konsumen['pekerjaan']; ?></p>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>No Kartu Keluarga</td>
+                            <td> : </td>
+                            <th>
+                                <h5 class="card-subtitle fw-bold"><?= $konsumen['no_kk']; ?></h5>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Alamat Sesuai KTP</td>
                             <td> : </td>
                             <th>
                                 <p class="card-text"><?= $konsumen['alamat']; ?></p>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Nama Pasangan</td>
+                            <td> : </td>
+                            <th>
+                                <h5 class="card-subtitle fw-bold"><?= $konsumen['nama_pasangan']; ?></h5>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Nama Panggilan Pasangan</td>
+                            <td> : </td>
+                            <th>
+                                <h5 class="card-subtitle fw-bold"><?= $konsumen['nama_panggilan_pasangan']; ?></h5>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>No KTP Pasangan</td>
+                            <td> : </td>
+                            <th>
+                                <p class="card-text"><?= $konsumen['ktp_pasangan']; ?></p>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Tanggal Lahir Pasangan</td>
+                            <td> : </td>
+                            <th>
+                                <p class="card-text"><?= date('d-M-Y', strtotime($konsumen['tgl_lahir_pasangan'])); ?></p>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Alamat Sesuai KTP Pasangan</td>
+                            <td> : </td>
+                            <th>
+                                <p class="card-text"><?= $konsumen['alamat_ktp_pasangan']; ?></p>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Domisili</td>
+                            <td> : </td>
+                            <th>
+                                <p class="card-text"><?= $konsumen['domisili']; ?></p>
                             </th>
                         </tr>
                         <tr>
@@ -94,6 +165,13 @@ foreach ($akun as $akun) {
                             <td> : </td>
                             <th>
                                 <p class="card-text"><?= date('d M Y', strtotime($konsumen['tanggal_angsuran1'])); ?></p>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Tanggal Angsuran ke-2</td>
+                            <td> : </td>
+                            <th>
+                                <p class="card-text"><?= date('d M Y', strtotime($konsumen['tanggal_angsuran2'])); ?></p>
                             </th>
                         </tr>
                         <tr>
@@ -282,31 +360,47 @@ foreach ($akun as $akun) {
                                 <h5 class="card-subtitle fw-bold"><?= $konsumen['surveyor']; ?></h5>
                             </th>
                         </tr>
+                        <tr>
+                            <td>Status Approval</td>
+                            <td> : </td>
+                            <th>
+                                <h5 class="card-subtitle fw-bold" style="color:red"><?= $konsumen['status_approval']; ?></h5>
+                            </th>
+                        </tr>
                     </table>
-                    <form action="<?= base_url('/konsumen/' . $konsumen['id']); ?>" method="POST" class="d-inline">
-                        <?= csrf_field(); ?>
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" class="btn btn-danger mt-3" onclick="return confirm('Apakah Anda Yakin Akan Menghapus Data Ini?');"><i class="fa fa-trash"></i> Hapus Konsumen</button>
-                    </form>
-                    <a href="<?= base_url('/konsumen/' . $konsumen['id'] . '/edit'); ?>" class="btn btn-warning mt-3 mx-3"><i class="fa fa-pencil"></i> Edit</a>
-                    <a href="<?php if ($akun['no_akun'] != null) {
-                                    echo base_url('/akun/kembali');
-                                } else {
-                                    echo base_url('/akun/create/' . $konsumen['id']);
-                                }
-                                ?>" class="btn btn-outline-primary mt-3"><i class="fa fa-book"></i> Buat Akun</a>
-                    <a href="<?php if ($akun['no_akun'] != null) {
-                                    echo base_url('/akun/' . $konsumen['id']);
-                                } else {
-                                    echo base_url('/akun/batal');
-                                } ?>" class="btn btn-outline-success mt-3 mx-3"><i class="fa fa-money"></i> Lihat Transaksi</a>
+                    <?php if (in_groups('Superuser') || in_groups('Administrator')) : ?>
+                        <form action="<?= base_url('/konsumen/' . $konsumen['id']); ?>" method="POST" class="d-inline">
+                            <?= csrf_field(); ?>
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-danger mt-3" onclick="return confirm('Apakah Anda Yakin Akan Menghapus Data Ini?');"><i class="fa fa-trash"></i> Hapus Konsumen</button>
+                        </form>
+                        <a href="<?= base_url('/konsumen/' . $konsumen['id'] . '/edit'); ?>" class="btn btn-warning mt-3 mx-3"><i class="fa fa-pencil"></i> Edit</a>
+                    <?php endif; ?>
+                    <?php if (in_groups('Superuser') || in_groups('Administrator') || in_groups('Admin')) : ?>
+                        <a href="<?php if ($akun['no_akun'] != null) {
+                                        echo base_url('/akun/kembali');
+                                    } else if ($konsumen['status_approval'] != 'Approved') {
+                                        echo base_url('/akun/status');
+                                    } else {
+                                        echo base_url('/akun/create/' . $konsumen['id']);
+                                    }
+                                    ?>" class="btn btn-outline-primary mt-3 mx-3"><i class="fa fa-book"></i> Buat Akun</a>
+                        <a href="<?php if ($akun['no_akun'] != null) {
+                                        echo base_url('/akun/' . $konsumen['id']);
+                                    } else {
+                                        echo base_url('/akun/batal');
+                                    } ?>" class="btn btn-outline-success mt-3 mx-3"><i class="fa fa-money"></i> Lihat Transaksi</a>
+                    <?php endif ?>
+                    <?php if (in_groups('Surveyor')) : ?>
+                        <?php if ($konsumen['status_approval'] == 'Sedang Proses') : ?>
+                            <a href="<?= base_url('/konsumen/' . $konsumen['id'] . '/survey_edit'); ?>" class="btn btn-warning mt-3 mx-3"><i class="fa fa-pencil"></i> Update Status</a>
+                        <?php endif ?>
+                    <?php endif ?>
                 </div>
 
                 <hr>
                 <small style="color: red; font-size:10px">*) Sebelum <b>Hapus Konsumen</b>, Pastikan Sudah <b>Hapus Akun</b> Terlebih Dahulu!</small>
             </div>
-
-            <!-- <a href="<?= base_url('/akun/create/' . $konsumen['id']); ?>" class="btn btn-outline-success mt-3 mx-3"><i class="fa fa-book"></i> Buat Akun</a> -->
         </div>
     </div>
 </div>

@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Libraries\Konverter;
 use App\Models\AkunModel;
 use App\Models\KonsumenModel;
-use CodeIgniter\HTTP\Request;
+use App\Models\PegawaiModel;
 use Config\Services;
 
 class Transaksi extends BaseController
@@ -13,14 +13,26 @@ class Transaksi extends BaseController
     protected $akunModel;
     protected $konsumenModel;
     protected $konverter;
+    protected $pegawaiModel;
 
     public function __construct()
     {
         $this->akunModel = new AkunModel();
         $this->konsumenModel = new KonsumenModel();
+        $this->pegawaiModel = new PegawaiModel();
         $this->konverter = new Konverter();
     }
 
+    public function index($id)
+    {
+        $data = [
+            'title' => 'Data Transaksi',
+            'konsumen' => $this->konsumenModel->getKonsumen($id),
+            'akun' => $this->akunModel->getIndexAkun($id),
+            'konverter' => $this->konverter
+        ];
+        return view('transaksi/index', $data);
+    }
 
     public function create($id)
     {
@@ -29,6 +41,7 @@ class Transaksi extends BaseController
             'validation' => Services::validation(),
             'akun' => $this->akunModel->getCreateAkun($id),
             'konsumen' => $this->konsumenModel->getKonsumen($id),
+            'pegawai' => $this->pegawaiModel->getCollector(),
             'konverter' => $this->konverter
         ];
 
@@ -59,12 +72,14 @@ class Transaksi extends BaseController
             'telpon' => $this->request->getVar('telpon'),
             'tanggal' => $this->request->getVar('tanggal'),
             'no_ba' => $this->request->getVar('no_ba'),
-            'simpan' => $this->konverter->des3($this->request->getVar('simpan')),
-            'ambil' => $this->konverter->des3($this->request->getVar('ambil')),
-            'saldo' => $this->konverter->des3($this->request->getVar('saldo')),
-            'sisa_os' => $this->konverter->des3($this->request->getVar('sisa_os')),
+            'simpan' => $this->konverter->des($this->request->getVar('simpan')),
+            'ambil' => $this->konverter->des($this->request->getVar('ambil')),
+            'saldo' => $this->konverter->des($this->request->getVar('saldo')),
+            'sisa_os' => $this->konverter->des($this->request->getVar('sisa_os')),
             'angsuran_ke' => $this->request->getVar('angsuran_ke'),
+            'collector' => $this->request->getVar('collector'),
             'keterangan' => $this->request->getVar('keterangan'),
+            'user_input' => $this->request->getVar('user_input'),
             'konsumen_id' => $this->request->getVar('konsumen_id')
         ]);
 
@@ -92,7 +107,57 @@ class Transaksi extends BaseController
             alert('Data Akun Tersebut Belum Ada, Silahkan Buat Akun Terlebih Dahulu!');
             window.location.href = "<?= base_url('/konsumen'); ?>"
         </script>
+        <?php
+    }
+
+    public function edit($id)
+    {
+        $data = [
+            'title' => 'Edit Transaksi',
+            'akun' => $this->akunModel->getAkun($id),
+            'konsumen' => $this->konsumenModel->getKonsumen(),
+            'pegawai' => $this->pegawaiModel->getCollector(),
+            'konverter' => $this->konverter
+        ];
+        return view('transaksi/edit', $data);
+    }
+
+    public function update($id)
+    {
+        $akun = $this->akunModel->getAkun($id);
+        $sql = $this->akunModel->save([
+            'id' => $id,
+            'no_akun' => $this->request->getVar('no_akun'),
+            'nama_konsumen' => $this->request->getVar('nama_konsumen'),
+            'telpon' => $this->request->getVar('telpon'),
+            'tanggal' => $this->request->getVar('tanggal'),
+            'no_ba' => $this->request->getVar('no_ba'),
+            'simpan' => $this->konverter->des($this->request->getVar('simpan')),
+            'ambil' => $this->konverter->des($this->request->getVar('ambil')),
+            'saldo' => $this->konverter->des($this->request->getVar('saldo')),
+            'sisa_os' => $this->konverter->des($this->request->getVar('sisa_os')),
+            'angsuran_ke' => $this->request->getVar('angsuran_ke'),
+            'collector' => $this->request->getVar('collector'),
+            'keterangan' => $this->request->getVar('keterangan'),
+            'user_input' => $this->request->getVar('user_input'),
+            'konsumen_id' => $this->request->getVar('konsumen_id')
+        ]);
+
+        if ($sql) {
+        ?>
+            <script>
+                alert('Data Berhasil Diubah.');
+                window.location.href = "<?= base_url('/transaksi/index/' . $akun['konsumen_id']) ?>";
+            </script>
+        <?php
+        } else {
+        ?>
+            <script>
+                alert('Gagal Mengubah Data!.');
+                window.location.href = "<?= base_url('/transaksi/index/' . $akun['konsumen_id']) ?>";
+            </script>
 <?php
+        }
     }
 }
 ?>

@@ -34,23 +34,26 @@ foreach ($akun as $akun) {
             <!-- End Menampilkan Notifikasi Alert -->
             <div class="row">
                 <div class="col mb-5">
-                    <a href="<?= base_url('/konsumen/create'); ?>" class="btn btn-primary mt-3"><i class="fa fa-plus-circle"></i> Tambah Data Konsumen</a>
+                    <?php if (in_groups('Superuser') || in_groups('Administrator') || in_groups('Admin')) : ?>
+                        <a href="<?= base_url('/konsumen/create'); ?>" class="btn btn-primary mt-3"><i class="fa fa-plus-circle"></i> Tambah Data Konsumen</a>
+                    <?php endif ?>
                 </div>
             </div>
-            <table class="table table-hover mt-4" id="konsumenTable">
-                <thead class="text-center">
+            <table class="table table-sm table-hover mt-4 hurufKecil" id="konsumenTable">
+                <thead class="">
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">No Akun / Mitra</th>
                         <th scope="col">Nama</th>
                         <th scope="col">Tanggal Angsuran</th>
-                        <th scope="col">Tanggal Jatuh Tempo Akhir</th>
-                        <th scope="col">Angsuran</th>
+                        <th scope="col">Tgl Jatuh Tempo Akhir</th>
+                        <th scope="col" style="width:80px">Angsuran</th>
                         <th scope="col">Marketing</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Pilihan</th>
                     </tr>
                 </thead>
-                <tbody class="text-center">
+                <tbody class="">
 
                 </tbody>
             </table>

@@ -30,9 +30,6 @@
             <?php endif; ?>
             <!-- End Menampilkan Notifikasi Alert -->
             <div class="row">
-                <!-- <div class="col">
-                    <a href="<?= base_url(''); ?>" class="btn btn-primary mt-3"><i class="fa fa-plus-circle"></i> Tambah Data Konsumen</a>
-                </div> -->
                 <form action="" method="POST" class="d-inline col-md-4">
                     <div class="input-group mt-3">
                         <input type="text" class="form-control" placeholder="Cari Nama / No Akun Disini..." name="cari" aria-label="Recipient's username" aria-describedby="button-addon2">

@@ -18,6 +18,7 @@ class KwitansiModel extends Model
         'pembayaran_angsuran',
         'pembayaran_dp',
         'total_pembayaran',
+        'user_print'
     ];
 
     public function getKwitansi($id = false)
@@ -32,5 +33,12 @@ class KwitansiModel extends Model
     public function getkwitansiPrintTable()
     {
         return $this->db->table('kwitansi')->select('*')->get()->getResult();
+    }
+
+    public function getSisaKwitansiTable()
+    {
+        return $this->db->table('kwitansi')->select('kwitansi.*, akun.tanggal, simpan, ambil, saldo')->selectMax('kwitansi.angsuran_ke')
+            ->selectMax('kwitansi.tanggal_cetak')->selectMax('akun.simpan')->selectMax('akun.saldo')->join('akun', 'akun.no_akun = kwitansi.no_mitra')
+            ->selectMax('akun.tanggal')->groupBy('kwitansi.no_mitra')->get()->getResult();
     }
 }

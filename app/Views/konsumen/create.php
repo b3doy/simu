@@ -4,7 +4,7 @@
 
 <div class="container mt-3">
     <div class="row">
-        <div class="col-8">
+        <div class="col">
             <div class="row">
                 <div class="col">
                     <h2>Form Tambah Data Konsumen</h2>
@@ -19,32 +19,166 @@
                     <label for="no_mitra" class="form-label">No Mitra</label>
                     <input type="text" class="form-control" id="no_mitra" name="no_mitra" value="<?= $konverter->kodeMitra(); ?>" readonly>
                 </div>
-                <div class="mb-3">
-                    <label for="nama_konsumen" class="form-label">Nama Konsumen</label>
-                    <input type="text" class="form-control <?= ($validation->hasError('nama_konsumen')) ? 'is-invalid' : ''; ?>" id="nama_konsumen" name="nama_konsumen" value="<?= old('nama_konsumen'); ?>">
-                    <div id="validationServer03Feedback" class="invalid-feedback">
-                        <?= $validation->getError('nama_konsumen'); ?>
+                <div class="row backKonsumen">
+                    <label class="form-label font-weight-bold">Konsumen</label>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="nama_konsumen" class="form-label">Nama Konsumen</label>
+                            <input type="text" class="form-control <?= ($validation->hasError('nama_konsumen')) ? 'is-invalid' : ''; ?>" id="nama_konsumen" name="nama_konsumen" value="<?= old('nama_konsumen'); ?>">
+                            <div id="validationServer03Feedback" class="invalid-feedback">
+                                <?= $validation->getError('nama_konsumen'); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="nama_panggilan" class="form-label">Nama Panggilan</label>
+                            <input type="text" class="form-control <?= ($validation->hasError('nama_panggilan')) ? 'is-invalid' : ''; ?>" id="nama_panggilan" name="nama_panggilan" value="<?= old('nama_panggilan'); ?>">
+                            <div id="validationServer03Feedback" class="invalid-feedback">
+                                <?= $validation->getError('nama_panggilan'); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="no_ktp" class="form-label">No KTP</label>
+                            <input type="number" class="form-control <?= ($validation->hasError('no_ktp')) ? 'is-invalid' : ''; ?>" id="no_ktp" name="no_ktp" value="<?= old('no_ktp'); ?>">
+                            <div id="validationServer03Feedback" class="invalid-feedback">
+                                <?= $validation->getError('no_ktp'); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="tgl_lahir" class="form-label">Tanggal Lahir</label>
+                            <input type="date" class="form-control <?= ($validation->hasError('tgl_lahir')) ? 'is-invalid' : ''; ?>" id="tgl_lahir" name="tgl_lahir" value="<?= old('tgl_lahir'); ?>">
+                            <div id="validationServer03Feedback" class="invalid-feedback">
+                                <?= $validation->getError('tgl_lahir'); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="pekerjaan" class="form-label">Pekerjaan</label>
+                            <input type="text" class="form-control <?= ($validation->hasError('pekerjaan')) ? 'is-invalid' : ''; ?>" id="pekerjaan" name="pekerjaan" value="<?= old('pekerjaan'); ?>">
+                            <div id="validationServer03Feedback" class="invalid-feedback">
+                                <?= $validation->getError('pekerjaan'); ?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="no_kk" class="form-label">No Kartu Keluarga</label>
+                            <input type="number" class="form-control <?= ($validation->hasError('no_kk')) ? 'is-invalid' : ''; ?>" id="no_kk" name="no_kk" value="<?= old('no_kk'); ?>">
+                            <div id="validationServer03Feedback" class="invalid-feedback">
+                                <?= $validation->getError('no_kk'); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="ibu_kandung" class="form-label">Nama Ibu Kandung</label>
+                            <input type="text" class="form-control <?= ($validation->hasError('ibu_kandung')) ? 'is-invalid' : ''; ?>" id="ibu_kandung" name="ibu_kandung" value="<?= old('ibu_kandung'); ?>">
+                            <div id="validationServer03Feedback" class="invalid-feedback">
+                                <?= $validation->getError('ibu_kandung'); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="telpon" class="form-label">No Telpon</label>
+                            <input type="text" class="form-control <?= ($validation->hasError('telpon')) ? 'is-invalid' : ''; ?>" id="telpon" name="telpon" value="<?= old('telpon'); ?>">
+                            <div id="validationServer03Feedback" class="invalid-feedback">
+                                <?= $validation->getError('telpon'); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="alamat" class="form-label">Alamat Sesuai KTP</label>
+                            <textarea name="alamat" id="alamat" class="form-control <?= ($validation->hasError('alamat')) ? 'is-invalid' : ''; ?>"><?= old('alamat'); ?></textarea>
+                            <div id="validationServer03Feedback" class="invalid-feedback">
+                                <?= $validation->getError('alamat'); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <label for="status_nikah" class="form-label">Status Pernikahan</label>
+                            <select name="status_nikah" id="status_nikah" class="form-control" onchange="if(this.selectedIndex==1){
+                                document.getElementById('backPasangan').style.display = 'block'
+                                } else if(this.selectedIndex==2){
+                                    document.getElementById('backPasangan').style.display = 'none'
+                                }">
+                                <option value="">----- Pilih Status Pernikahan -----</option>
+                                <option value=" Menikah">Menikah</option>
+                                <option value="Belum Menikah">Lajang</option>
+                            </select>
+                            <div id="validationServer03Feedback" class="invalid-feedback">
+                                <?= $validation->getError('status_nikah'); ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row backPasangan" id="backPasangan" style="display:none">
+                    <label class="form-label font-weight-bold">Pasangan</label>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="nama_pasangan" class="form-label">Nama Pasangan</label>
+                                <input type="text" class="form-control <?= ($validation->hasError('nama_pasangan')) ? 'is-invalid' : ''; ?>" id="nama_pasangan" name="nama_pasangan" value="<?= old('nama_pasangan'); ?>">
+                                <div id="validationServer03Feedback" class="invalid-feedback">
+                                    <?= $validation->getError('nama_pasangan'); ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="nama_pasangan" class="form-label">Nama Panggilan Pasangan</label>
+                                <input type="text" class="form-control <?= ($validation->hasError('nama_panggilan_pasangan')) ? 'is-invalid' : ''; ?>" id="nama_pasangan" name="nama_panggilan_pasangan" value="<?= old('nama_panggilan_pasangan'); ?>">
+                                <div id="validationServer03Feedback" class="invalid-feedback">
+                                    <?= $validation->getError('nama_panggilan_pasangan'); ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="ktp_pasangan" class="form-label">No KTP Pasangan</label>
+                                <input type="number" class="form-control <?= ($validation->hasError('ktp_pasangan')) ? 'is-invalid' : ''; ?>" id="ktp_pasangan" name="ktp_pasangan" value="<?= old('ktp_pasangan'); ?>">
+                                <div id="validationServer03Feedback" class="invalid-feedback">
+                                    <?= $validation->getError('ktp_pasangan'); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="tgl_lahir_pasangan" class="form-label">Tanggal Lahir Pasangan</label>
+                                <input type="date" class="form-control <?= ($validation->hasError('tgl_lahir_pasangan')) ? 'is-invalid' : ''; ?>" id="tgl_lahir_pasangan" name="tgl_lahir_pasangan" value="<?= old('tgl_lahir_pasangan'); ?>">
+                                <div id="validationServer03Feedback" class="invalid-feedback">
+                                    <?= $validation->getError('tgl_lahir_pasangan'); ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="mb-3 pb-2">
+                                <label for="alamat_ktp_pasangan" class="form-label">Alamat Sesuai KTP Pasangan</label>
+                                <textarea name="alamat_ktp_pasangan" id="alamat_ktp_pasangan" class="form-control <?= ($validation->hasError('alamat_ktp_pasangan')) ? 'is-invalid' : ''; ?>"><?= old('alamat_ktp_pasangan'); ?></textarea>
+                                <div id="validationServer03Feedback" class="invalid-feedback">
+                                    <?= $validation->getError('alamat_ktp_pasangan'); ?>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="no_ktp" class="form-label">No KTP</label>
-                    <input type="number" class="form-control <?= ($validation->hasError('no_ktp')) ? 'is-invalid' : ''; ?>" id="no_ktp" name="no_ktp" value="<?= old('no_ktp'); ?>">
+                    <label for="domisili" class="form-label">Alamat Domisili</label>
+                    <textarea name="domisili" id="domisili" class="form-control <?= ($validation->hasError('domisili')) ? 'is-invalid' : ''; ?>"><?= old('domisili'); ?></textarea>
                     <div id="validationServer03Feedback" class="invalid-feedback">
-                        <?= $validation->getError('no_ktp'); ?>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="alamat" class="form-label">Alamat</label>
-                    <textarea name="alamat" id="alamat" class="form-control <?= ($validation->hasError('alamat')) ? 'is-invalid' : ''; ?>"><?= old('alamat'); ?></textarea>
-                    <div id="validationServer03Feedback" class="invalid-feedback">
-                        <?= $validation->getError('alamat'); ?>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="telpon" class="form-label">No Telpon</label>
-                    <input type="text" class="form-control <?= ($validation->hasError('telpon')) ? 'is-invalid' : ''; ?>" id="telpon" name="telpon" value="<?= old('telpon'); ?>">
-                    <div id="validationServer03Feedback" class="invalid-feedback">
-                        <?= $validation->getError('telpon'); ?>
+                        <?= $validation->getError('domisili'); ?>
                     </div>
                 </div>
                 <div class="mb-3">
@@ -84,7 +218,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="total_penjualan" class="form-label">Total Penjualan</label>
-                    <input type="text" class="form-control angka3 <?= ($validation->hasError('total_penjualan')) ? 'is-invalid' : ''; ?>" id="total_penjualan" name="total_penjualan" value="<?= old('total_penjualan'); ?>" onkeyup="hitungtotal_penjualan()" readonly>
+                    <input type="text" class="form-control angka3 <?= ($validation->hasError('total_penjualan')) ? 'is-invalid' : ''; ?>" id="total_penjualan" name="total_penjualan" value="<?= old('total_penjualan'); ?>" onkeyup="hitungOs()" readonly>
                     <div id="validationServer03Feedback" class="invalid-feedback">
                         <?= $validation->getError('total_penjualan'); ?>
                     </div>
@@ -124,22 +258,33 @@
                 </div>
                 <div class="mb-3">
                     <label for="marketing" class="form-label">Marketing</label>
-                    <select name="marketing" id="marketing" class="form-control">
+                    <select name="marketing" id="marketing" class="form-control <?= ($validation->hasError('marketing')) ? 'is-invalid' : ''; ?>">
                         <option value="">----- Pilih Nama Marketing -----</option>
                         <?php foreach ($pegawai as $pegawai) : ?>
                             <option value="<?= $pegawai['nama_pegawai']; ?>"><?= $pegawai['nama_pegawai']; ?></option>
                         <?php endforeach; ?>
                     </select>
+                    <div id="validationServer03Feedback" class="invalid-feedback">
+                        <?= $validation->getError('marketing'); ?>
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="surveyor" class="form-label">Surveyor</label>
-                    <select name="surveyor" id="surveyor" class="form-control">
+                    <select name="surveyor" id="surveyor" class="form-control <?= ($validation->hasError('surveyor')) ? 'is-invalid' : ''; ?>">
                         <option value="">----- Pilih Nama Surveyor -----</option>
                         <?php foreach ($pegawai1 as $pegawai1) : ?>
                             <option value="<?= $pegawai1['nama_pegawai']; ?>"><?= $pegawai1['nama_pegawai']; ?></option>
                         <?php endforeach; ?>
                     </select>
+                    <div id="validationServer03Feedback" class="invalid-feedback">
+                        <?= $validation->getError('surveyor'); ?>
+                    </div>
                 </div>
+                <div class="mb-3">
+                    <label for="status_approval" class="form-label">Status Approval</label>
+                    <input type="text" class="form-control" id="status_approval" name="status_approval" value="Sedang Proses" readonly>
+                </div>
+                <input type="hidden" name="user_input" value="<?= user()->username; ?>">
 
                 <hr>
                 <h5 class="fw-bold"><u>BARANG</u></h5>
@@ -285,7 +430,7 @@
         document.getElementById('os').value = rp + (desimal(os)) + (",00")
 
         var totalPenjualan = parseInt(os) + parseInt(dp)
-        document.getElementById('total_penjualan').value = totalPenjualan
+        document.getElementById('total_penjualan').value = rp + (desimal(totalPenjualan)) + (",00")
     }
 
     function skemaPembayaran() {
@@ -306,20 +451,12 @@
 
     function jatuhTempo() {
         var jangkaWaktu = document.getElementById('tenor').value
-        // var jw = jangkaWaktu - 1
         var jw2 = jangkaWaktu - 2
         var tglAngsuran2 = document.getElementById('tanggal_angsuran2').value
-        // if (tglAngsuran2 != 0) {
         tglAngsur = new Date($('#tanggal_angsuran2').val())
         tglJt = new Date(tglAngsur.setMonth(tglAngsur.getMonth() + parseFloat(jw2))).toISOString().split('.')
         tglJt1 = tglJt[0].split('T')
         $('#tanggal_jt').val(tglJt1[0])
-        // } else {
-        //     tglAngsur = new Date($('#tanggal_angsuran1').val())
-        //     tglJt = new Date(tglAngsur.setMonth(tglAngsur.getMonth() + parseFloat(jw))).toISOString().split('.')
-        //     tglJt1 = tglJt[0].split('T')
-        //     $('#tanggal_jt').val(tglJt1[0])
-        // }
     }
 </script>
 

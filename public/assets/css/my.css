@@ -16,6 +16,9 @@
 .jdl {
   width: 50%;
 }
+.jdl-min {
+  width: 45%;
+}
 .hurufKecil {
   font-size: 0.9em;
 }
@@ -73,4 +76,20 @@
 .aKwit:hover {
   text-decoration: none;
   color: white;
+}
+
+.garisBawah {
+  border-bottom: black 1px solid;
+}
+
+.backKonsumen {
+  background-color: navajowhite;
+}
+
+.backPasangan {
+  background-color: rgb(178, 243, 178);
+}
+
+.backFormAjah {
+  background-color: beige;
 }

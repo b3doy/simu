@@ -20,7 +20,6 @@ foreach ($akun as $akun) {
                         <th scope="col">DPD</th>
                         <th scope="col">Angsuran</th>
                         <th scope="col">Sisa OS</th>
-                        <!-- <th scope="col" class="noprint">Pilihan</th> -->
                     </tr>
                 </thead>
                 <tbody class="text-center">
@@ -65,7 +64,6 @@ foreach ($akun as $akun) {
             // Remove the formatting to get integer data for summation
             var intVal = function(i) {
                 return typeof i === 'string' ?
-                    // i.replace(/[\$,]/g, '') * 1 :
                     parseInt(i.split('Rp.').join('').split('.').join('')) * 1 :
                     typeof i === 'number' ?
                     i : 0;
@@ -82,7 +80,6 @@ foreach ($akun as $akun) {
             pageTotal = api
                 .column(6, {
                     page: 'current'
-                    // search: 'applied'
                 })
                 .data()
                 .reduce(function(a, b) {
@@ -106,7 +103,6 @@ foreach ($akun as $akun) {
             pageTotal = api
                 .column(7, {
                     page: 'current'
-                    // search: 'applied'
                 })
                 .data()
                 .reduce(function(c, d) {

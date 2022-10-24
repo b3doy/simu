@@ -48,6 +48,7 @@ foreach ($akun as $a) {
                         <thead>
                             <tr>
                                 <th>Tanggal</th>
+                                <th>No BA</th>
                                 <th>Bayar</th>
                                 <th>Angsuran Ke -</th>
                                 <th>Sisa OS</th>
@@ -56,46 +57,33 @@ foreach ($akun as $a) {
                         </thead>
                         <tbody>
                             <?php for ($i = 0; $i < count($akun); $i++) : ?>
-                                <tr>
-                                    <td><?= date('d M Y', strtotime($akun[$i]['tanggal'])); ?></td>
-                                    <!-- <td><?= $konverter->rupiah02($akun[$i]['simpan']); ?></td> -->
-                                    <td><?= $konverter->rupiah02($akun[$i]['ambil']); ?></td>
-                                    <td><?= $akun[$i]['angsuran_ke']; ?></td>
-                                    <?php if ($akun[$i] != $akun[0]) : ?>
-                                        <td>
-                                            <?php
-                                            $dp = $konsumen['dp'];
-                                            $angsuran = $konsumen['angsuran'];
-                                            $dpAngs = $dp + $angsuran;
-                                            if ($akun[$i]['simpan'] == $akun[$i]['angsuran']) {
-                                                $akun[$i]['sisa_os'] = ($akun[$i - 1]['sisa_os']) - ($akun[$i]['simpan']);
-                                                $sisaOs = $konverter->rupiah02($akun[$i]['sisa_os']);
-                                                echo $sisaOs;
-                                            } else if ($akun[$i]['simpan'] == $dpAngs) {
-                                                $akun[$i]['sisa_os'] = ($akun[$i - 1]['sisa_os']) - ($akun[$i]['simpan'] - $konsumen['dp']);
-                                                $sisaOs = $konverter->rupiah02($akun[$i]['sisa_os']);
-                                                echo $sisaOs;
-                                            } else if (($akun[$i]['simpan'] > $akun[$i]['angsuran']) && ($akun[$i]['simpan'] != $dpAngs)) {
-                                                $akun[$i]['sisa_os'] = ($akun[$i - 1]['sisa_os']) - ($akun[$i]['ambil']);
-                                                $sisaOs = $konverter->rupiah02($akun[$i]['sisa_os']);
-                                                echo $sisaOs;
-                                            } else if (($akun[$i]['simpan'] < $akun[$i]['angsuran'])) {
-                                                $akun[$i]['sisa_os'] = ($akun[$i - 1]['sisa_os']) - ($akun[$i]['ambil']);
-                                                $sisaOs = $konverter->rupiah02($akun[$i]['sisa_os']);
-                                                echo $sisaOs;
-                                            }
-                                            ?>
-                                        </td>
-                                    <?php elseif ($akun[$i] == $akun[0]) : ?>
-                                        <td>
-                                            <?php
-                                            $osAwal = $konverter->rupiah02($akun[0]['sisa_os']);
-                                            echo $osAwal;
-                                            ?>
-                                        </td>
-                                    <?php endif; ?>
-                                    <td><?= $akun[$i]['keterangan']; ?></td>
-                                </tr>
+                                <?php
+                                // if ($akun[$i] != $akun[0]) {
+                                if ($akun[$i]['ambil'] != 0) {
+                                ?>
+                                    <tr>
+                                        <td><?= date('d M Y', strtotime($akun[$i]['tanggal'])); ?></td>
+                                        <!-- <td><?= $konverter->rupiah02($akun[$i]['simpan']); ?></td> -->
+                                        <td><?= $akun[$i]['no_ba']; ?></td>
+                                        <td><?= $konverter->rupiah02($akun[$i]['ambil']); ?></td>
+                                        <td><?= $akun[$i]['angsuran_ke']; ?></td>
+                                        <?php if ($akun[$i] != $akun[0]) : ?>
+                                            <td>
+                                                <?= $konverter->rupiah02($akun[$i]['sisa_os']); ?>
+                                            </td>
+                                        <?php elseif ($akun[$i] == $akun[0]) : ?>
+                                            <td>
+                                                <?php
+                                                $osAwal = $konverter->rupiah02($akun[0]['sisa_os']);
+                                                echo $osAwal;
+                                                ?>
+                                            </td>
+                                        <?php endif; ?>
+                                        <td><?= $akun[$i]['keterangan']; ?></td>
+                                    </tr>
+                                <?php
+                                }
+                                ?>
                             <?php endfor; ?>
                         </tbody>
                     </table>

@@ -13,7 +13,7 @@ echo $this->section('content');
                     <a href="<?= base_url('/pegawai/create'); ?>" class="btn btn-success mt-3"><i class="fa fa-plus-circle"></i> Tambah Data Pegawai</a>
                 </div>
             </div>
-            <table class="table table-hover mt-4" id="konsumenTable">
+            <table class="table table-hover hurufKecil" id="konsumenTable">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -33,13 +33,23 @@ echo $this->section('content');
                     ?>
                         <tr>
                             <td><?= $no; ?></td>
-                            <td><?= $pegawai['nip']; ?></td>
-                            <td><?= $pegawai['nama_pegawai']; ?></td>
-                            <td><?= $pegawai['jabatan']; ?></td>
+                            <td><a href="<?= base_url('slipGaji/index/' . $pegawai['id']); ?>" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" title="Slip Gaji"><?= $pegawai['nip']; ?></a></td>
+                            <td>
+                                <a href="<?= base_url('pegawai/detail/' . $pegawai['id']); ?>" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" title="Data Konsumen Berdasarkan Marketing"><?= $pegawai['nama_pegawai']; ?></a>
+                            </td>
+                            <td>
+                                <?php if (($pegawai['jabatan'] == 'OWNER / SURVEYOR / MARKETING / COLLECTOR') || ($pegawai['jabatan'] == 'MARKETING / SURVEYOR')) : ?>
+                                    <a href=" <?= base_url('pegawai/surveyor/' . $pegawai['id']); ?>" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" title="Data Konsumen Berdasarkan Surveyor"><?= $pegawai['jabatan']; ?></a>
+                                <?php else : ?>
+                                    <?= $pegawai['jabatan']; ?>
+                                <?php endif ?>
+                            </td>
                             <td><?= $pegawai['telpon']; ?></td>
                             <td><?= $pegawai['alamat']; ?></td>
                             <td>
-                                <button class="badge badge-warning"><a href="<?= base_url('/pegawai/edit/' . $pegawai['id']); ?>"><i class="fa fa-pencil"></i> Edit</a></button> |
+                                <button class="badge badge-warning">
+                                    <a class="badge badge-warning" href="<?= base_url('/pegawai/edit/' . $pegawai['id']); ?>" style="color:black"><i class="fa fa-pencil" style="color:black"></i> Edit</a>
+                                </button> |
                                 <form action="<?= base_url('/pegawai/' . $pegawai['id']); ?>" method="POST" class="d-inline">
                                     <?= csrf_field(); ?>
                                     <input type="hidden" name="_method" value="DELETE">

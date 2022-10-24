@@ -79,11 +79,10 @@ class Konsumen extends BaseController
                 'rules' => 'required',
                 'errors' => ['required' => '{field} harus diisi!']
             ],
-            'telpon' => [
-                'rules' => 'required|is_natural',
+            'tgl_lahir' => [
+                'rules' => 'required',
                 'errors' => [
-                    'required' => 'No {field} harus diisi!',
-                    'is_natural' => 'No {field} hanya boleh diisi angka!',
+                    'required' => '{field} harus diisi!',
                 ]
             ],
             'angsuran' => [
@@ -106,9 +105,18 @@ class Konsumen extends BaseController
                 'rules' => 'required',
                 'errors' => ['required' => '{field} harus diisi!']
             ],
+            'marketing' => [
+                'rules' => 'required',
+                'errors' => ['required' => '{field} harus dipilih!']
+            ],
+            'surveyor' => [
+                'rules' => 'required',
+                'errors' => ['required' => '{field} harus dipilih!']
+            ],
         ])) {
             $validation = Services::validation();
-            // return redirect()->to(base_url('konsumen/create'))->withInput()->with('validation', $validation);
+            return redirect()->to(base_url('konsumen/create'))->withInput();
+
             $data = [
                 'title' => 'Buat Akun',
                 'validation' => $validation
@@ -119,9 +127,21 @@ class Konsumen extends BaseController
         $sql = $this->konsumenModel->save([
             'no_mitra' => $this->request->getPost('no_mitra'),
             'nama_konsumen' => $this->request->getPost('nama_konsumen'),
+            'nama_panggilan' => $this->request->getPost('nama_panggilan'),
             'no_ktp' => $this->request->getPost('no_ktp'),
-            'alamat' => $this->request->getPost('alamat'),
+            'tgl_lahir' => $this->request->getPost('tgl_lahir'),
+            'ibu_kandung' => $this->request->getPost('ibu_kandung'),
+            'pekerjaan' => $this->request->getPost('pekerjaan'),
             'telpon' => $this->request->getPost('telpon'),
+            'no_kk' => $this->request->getPost('no_kk'),
+            'alamat' => $this->request->getPost('alamat'),
+            'status_nikah' => $this->request->getPost('status_nikah'),
+            'nama_pasangan' => $this->request->getPost('nama_pasangan'),
+            'nama_panggilan_pasangan' => $this->request->getPost('nama_panggilan_pasangan'),
+            'ktp_pasangan' => $this->request->getPost('ktp_pasangan'),
+            'tgl_lahir_pasangan' => $this->request->getPost('tgl_lahir_pasangan'),
+            'alamat_ktp_pasangan' => $this->request->getPost('alamat_ktp_pasangan'),
+            'domisili' => $this->request->getPost('domisili'),
             'dp' => $this->konverter->des3($this->request->getPost('dp')),
             'angsuran' => $this->konverter->des3($this->request->getPost('angsuran')),
             'tenor' => $this->request->getPost('tenor'),
@@ -134,6 +154,8 @@ class Konsumen extends BaseController
             'skema' => $this->request->getPost('skema'),
             'marketing' => $this->request->getPost('marketing'),
             'surveyor' => $this->request->getPost('surveyor'),
+            'status_approval' => $this->request->getPost('status_approval'),
+            'user_input' => $this->request->getPost('user_input'),
             'jumlah_barang' => $this->request->getPost('jumlah_barang'),
             'nama_barang1' => $this->request->getPost('nama_barang1'),
             'merk_barang1' => $this->request->getPost('merk_barang1'),
@@ -170,7 +192,8 @@ class Konsumen extends BaseController
             'konsumen' => $this->konsumenModel->getKonsumen($id),
             'pegawai' => $this->pegawaiModel->getMarketing(),
             'pegawai1' => $this->pegawaiModel->getSurveyor(),
-            'konverter' => $this->konverter
+            'konverter' => $this->konverter,
+            'validation' => Services::validation()
         ];
 
         return view('konsumen/edit', $data);
@@ -197,16 +220,15 @@ class Konsumen extends BaseController
                     'required' => '{field} harus diisi!',
                 ]
             ],
+            'tgl_lahir' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} harus diisi!',
+                ]
+            ],
             'alamat' => [
                 'rules' => 'required',
                 'errors' => ['required' => '{field} harus diisi!']
-            ],
-            'telpon' => [
-                'rules' => $rule_telpon,
-                'errors' => [
-                    'required' => 'No {field} harus diisi!',
-                    'is_natural' => 'No {field} hanya boleh diisi angka!',
-                ]
             ],
             'angsuran' => [
                 'rules' => 'required',
@@ -228,18 +250,41 @@ class Konsumen extends BaseController
                 'rules' => 'required',
                 'errors' => ['required' => '{field} harus diisi!']
             ],
+            'status_approval' => [
+                'rules' => 'required',
+                'errors' => ['required' => 'form {field} harus dipilih!']
+            ],
+            'deskripsi_survey' => [
+                'rules' => 'required',
+                'errors' => ['required' => 'form {field} harus diisi!']
+            ],
+            'deskripsi_unit' => [
+                'rules' => 'required',
+                'errors' => ['required' => 'form {field} harus diisi!']
+            ],
         ])) {
-            $validation = Services::validation();
-            return redirect()->to(base_url('/konsumen/edit/' . $this->request->getVar('id')))->withInput()->with('validation', $validation);
+            return redirect()->back()->withInput();
         };
 
         $sql = $this->konsumenModel->save([
             'id' => $id,
             'no_mitra' => $this->request->getPost('no_mitra'),
             'nama_konsumen' => $this->request->getPost('nama_konsumen'),
+            'nama_panggilan' => $this->request->getPost('nama_panggilan'),
             'no_ktp' => $this->request->getPost('no_ktp'),
-            'alamat' => $this->request->getPost('alamat'),
+            'tgl_lahir' => $this->request->getPost('tgl_lahir'),
+            'ibu_kandung' => $this->request->getPost('ibu_kandung'),
+            'pekerjaan' => $this->request->getPost('pekerjaan'),
             'telpon' => $this->request->getPost('telpon'),
+            'no_kk' => $this->request->getPost('no_kk'),
+            'alamat' => $this->request->getPost('alamat'),
+            'status_nikah' => $this->request->getPost('status_nikah'),
+            'nama_pasangan' => $this->request->getPost('nama_pasangan'),
+            'nama_panggilan_pasangan' => $this->request->getPost('nama_panggilan_pasangan'),
+            'ktp_pasangan' => $this->request->getPost('ktp_pasangan'),
+            'tgl_lahir_pasangan' => $this->request->getPost('tgl_lahir_pasangan'),
+            'alamat_ktp_pasangan' => $this->request->getPost('alamat_ktp_pasangan'),
+            'domisili' => $this->request->getPost('domisili'),
             'dp' => $this->konverter->des3($this->request->getPost('dp')),
             'angsuran' => $this->konverter->des3($this->request->getPost('angsuran')),
             'tenor' => $this->request->getPost('tenor'),
@@ -252,6 +297,12 @@ class Konsumen extends BaseController
             'skema' => $this->request->getPost('skema'),
             'marketing' => $this->request->getPost('marketing'),
             'surveyor' => $this->request->getPost('surveyor'),
+            'status_approval' => $this->request->getPost('status_approval'),
+            'deskripsi_survey' => $this->request->getPost('deskripsi_survey'),
+            'waktu_update_surveyor' => $this->request->getPost('waktu_update_surveyor'),
+            'deskripsi_unit' => $this->request->getPost('deskripsi_unit'),
+            'user_input' => $this->request->getPost('user_input'),
+            'status_akun' => $this->request->getPost('status_akun'),
             'jumlah_barang' => $this->request->getPost('jumlah_barang'),
             'nama_barang1' => $this->request->getPost('nama_barang1'),
             'merk_barang1' => $this->request->getPost('merk_barang1'),
@@ -269,7 +320,7 @@ class Konsumen extends BaseController
             'warna_barang3' => $this->request->getPost('warna_barang3'),
             'imei3' => $this->request->getPost('imei3'),
             'nama_barang4' => $this->request->getPost('nama_barang4'),
-            'deskripsi_barang4' => $this->request->getPost('deskripsi_barang4')
+            'deskripsi_barang4' => $this->request->getPost('deskripsi_barang4'),
         ]);
         if ($sql) {
             session()->setFlashData('pesanBerhasil', 'Data Konsumen Berhasil Diubah.');
@@ -278,6 +329,53 @@ class Konsumen extends BaseController
             session()->setFlashData('pesanGagal', 'Gagal Mengubah Data Konsumen.');
             return redirect()->to(base_url('/konsumen'));
         }
+    }
+
+    public function surveyEdit($id)
+    {
+        $data = [
+            'title'     => 'Update Status Approval',
+            'konsumen' => $this->konsumenModel->getKonsumen($id),
+            'pegawai' => $this->pegawaiModel->getMarketing(),
+            'pegawai1' => $this->pegawaiModel->getSurveyor(),
+            'konverter' => $this->konverter,
+            'validation' => Services::validation(),
+        ];
+        return view('konsumen/survey_edit', $data);
+    }
+
+    public function rejected()
+    {
+        $data = [
+            'title'     => "Data Konsumen Ditolak",
+            'konsumen'  => $this->konsumenModel->getRejected()
+        ];
+        return view('konsumen/rejected', $data);
+    }
+
+    public function rejectedTable()
+    {
+        $list = $this->konsumenModel->getRejected();
+        $data = [];
+        $no = 0;
+        foreach ($list as $list) {
+            $no++;
+            $row = [];
+            $row[] = $no;
+            $row[] = date('d-M-Y', strtotime($list->waktu_update_surveyor));
+            $row[] = $list->nama_konsumen;
+            $row[] = $list->no_ktp;
+            $row[] = $list->alamat;
+            $row[] = $list->marketing;
+            $row[] = '<a class="bg-danger text-light">' . $list->status_approval . '</a>';
+            $row[] = $list->surveyor;
+            $row[] = $list->deskripsi_survey;
+
+            $data[] = $row;
+        }
+
+        $output = ['data' => $data];
+        echo json_encode($output);
     }
 
     public function delete($id)
@@ -307,13 +405,21 @@ class Konsumen extends BaseController
             if ($list->tanggal_angsuran2 != 0) {
                 $row[] = $list->tanggal_angsuran2[8] . $list->tanggal_angsuran2[9];
             } else {
-                // $row[] = date('d/m/Y', strtotime($list->tanggal_angsuran1));
                 $row[] = $list->tanggal_angsuran1[8] . $list->tanggal_angsuran1[9];
             }
             $row[] = date('d M Y', strtotime($list->tanggal_jt));
             $row[] = $this->konverter->rupiah02($list->angsuran);
             $row[] = $list->marketing;
-            $row[] = '<a class="btn btn-outline-info btn-sm" href =' . base_url("/konsumen/" . $list->id) . '><i class="fa fa-book"></i> Detail</a>';
+            if ($list->status_approval == 'Sedang Proses') {
+                $row[] = '<p class="bg-warning text-dark">' . $list->status_approval . '</p>';
+            } elseif ($list->status_approval == 'Approved') {
+                $row[] = '<p class="bg-success text-light">' . $list->status_approval . '</p>';
+            } elseif ($list->status_approval == 'Direkomendasikan') {
+                $row[] = '<p class="bg-info text-dark">' . $list->status_approval . '</p>';
+            } else {
+                $row[] = '<p class="bg-danger text-light">' . $list->status_approval . '</p>';
+            }
+            $row[] = '<a class="badge badge-info" href =' . base_url("/konsumen/" . $list->id) . '><i class="fa fa-book"></i> Detail</a>';
 
             $data[] = $row;
         }
@@ -324,10 +430,55 @@ class Konsumen extends BaseController
         echo json_encode($output);
     }
 
+    public function statusApproval()
+    {
+        $data = [
+            'title'     => 'Status Approval',
+            'konsumen'  => $this->konsumenModel->getStatusApproval(),
+        ];
+        return view('konsumen/status_approval', $data);
+    }
+
+    public function statusApprovalTable()
+    {
+        $list = $this->konsumenModel->getStatusApproval();
+        $data = [];
+        $no = 0;
+        foreach ($list as $list) {
+            if (user()->username == $list->surveyor) {
+                if ($list->status_akun == null && $list->status_approval != 'Ditolak') {
+                    $no++;
+                    $row = [];
+                    $row[] = $no;
+                    $row[] = $list->no_mitra;
+                    $row[] = $list->nama_konsumen;
+                    $row[] = $list->alamat;
+                    $row[] = $this->konverter->rupiah($list->angsuran);
+                    $row[] = $list->tenor;
+                    $row[] = $list->nama_barang1;
+                    if ($list->status_approval == 'Sedang Proses') {
+                        $row[] = '<p class="bg-warning text-dark">' . $list->status_approval . '</p>';
+                    } elseif ($list->status_approval == 'Approved') {
+                        $row[] = '<p class="bg-success text-light">' . $list->status_approval . '</p>';
+                    } elseif ($list->status_approval == 'Direkomendasikan') {
+                        $row[] = '<p class="bg-info text-dark">' . $list->status_approval . '</p>';
+                    } else {
+                        $row[] = '<p class="bg-danger text-light">' . $list->status_approval . '</p>';
+                    }
+                    $row[] = '<a class="badge badge-info" href =' . base_url("/konsumen/" . $list->id) . '><i class="fa fa-book"></i> Detail</a>';
+
+                    $data[] = $row;
+                }
+            }
+        }
+        $output = ['data' => $data];
+        echo json_encode($output);
+    }
+
     public function akanLunas()
     {
         $data = [
-            'title' => 'Konsumen Akan Lunas',
+            'title'     => 'Konsumen Akan Lunas',
             'konsumen'  => $this->konsumenModel->getKonsumen(),
             'akun'      => $this->akunModel->getAkun(),
             'konverter' => $this->konverter,
@@ -348,17 +499,17 @@ class Konsumen extends BaseController
             $tiga_bulan_lagi = $jt - 7776000; // 7776000 = 60 detik x 60 menit x 24 jam x 90 hari 
             $hari_ini = time();
             $tgl_angsuran = date('d/m/Y', strtotime($list->tanggal_angsuran2));
-            if ($hari_ini >= $tiga_bulan_lagi && $jt >= $hari_ini) {
+            if ($hari_ini >= $tiga_bulan_lagi && $jt >= $hari_ini && $list->sisa_os != 0) {
                 $no++;
                 $row = array();
                 $row[] = $no;
                 $row[] = $list->no_mitra;
                 $row[] = $list->nama_konsumen;
                 $row[] = $tgl_angsuran[0] . $tgl_angsuran[1];
-                $row[] = date('d M Y', strtotime($list->tanggal_jt));
+                $row[] = date('d-M-Y', strtotime($list->tanggal_jt));
                 $row[] = $this->konverter->rupiah02($list->angsuran);
                 $row[] = $this->konverter->rupiah02($list->sisa_os);
-                $row[] = '<a class="btn btn-outline-info btn-sm noprint" href =' . base_url("/konsumen/" . $list->id) . '><i class="fa fa-book"></i> Detail</a>';
+                $row[] = '<a class="btn btn-outline-info btn-sm noprint" href =' . base_url("/konsumen/" . $list->konsumen_id) . '><i class="fa fa-book"></i> Detail</a>';
 
                 $data[] = $row;
             }
@@ -382,7 +533,7 @@ class Konsumen extends BaseController
 
     public function konsumenSudahLunasTable()
     {
-        $list = $this->konsumenModel->getKonsumenTable();
+        $list = $this->konsumenModel->getKonsumenAkanLunasTable();
         $akun = $this->akunModel->getAkun();
         $data = array();
         $no = 0;
@@ -390,19 +541,30 @@ class Konsumen extends BaseController
         }
         foreach ($list as $list) {
             $jt = strtotime($list->tanggal_jt);
-            // $tiga_bulan_lagi = $jt - 7776000; // 7776000 = 60 detik x 60 menit x 24 jam x 90 hari 
             $hari_ini = time();
             if ($hari_ini >= $jt) {
-                if ($akun['sisa_os'] == 0) {
+                if ($list->sisa_os == 0) {
                     $no++;
                     $row = array();
                     $row[] = $no;
                     $row[] = $list->no_mitra;
                     $row[] = $list->nama_konsumen;
-                    // $row[] = date('d/m/Y', strtotime($list->tanggal_angsuran1));
-                    // $row[] = date('d/m/Y', strtotime($list->tanggal_jt));
                     $row[] = $this->konverter->rupiah02($list->angsuran);
-                    $row[] = '<a class="btn btn-outline-info btn-sm noprint" href =' . base_url("/konsumen/" . $list->id) . '><i class="fa fa-book"></i> Detail</a>';
+                    $row[] = $list->sisa_os;
+                    $row[] = '<a class="btn btn-outline-info btn-sm noprint" href =' . base_url("/konsumen/" . $list->konsumen_id) . '><i class="fa fa-book"></i> Detail</a>';
+
+                    $data[] = $row;
+                }
+            } else {
+                if ($list->sisa_os == 0) {
+                    $no++;
+                    $row = array();
+                    $row[] = $no;
+                    $row[] = $list->no_mitra;
+                    $row[] = $list->nama_konsumen;
+                    $row[] = $this->konverter->rupiah02($list->angsuran);
+                    $row[] = $list->sisa_os;
+                    $row[] = '<a class="btn btn-outline-info btn-sm noprint" href =' . base_url("/konsumen/" . $list->konsumen_id) . '><i class="fa fa-book"></i> Detail</a>';
 
                     $data[] = $row;
                 }
@@ -451,7 +613,6 @@ class Konsumen extends BaseController
                 $row[] = intval($dpd) + intval($dpd_hari) . ' hari';
                 $row[] = $this->konverter->rupiah02($list->angsuran);
                 $row[] = $this->konverter->rupiah02($list->sisa_os);
-                // $row[] = '<a class="btn btn-outline-info btn-sm noprint" href =' . base_url("/konsumen/" . $list->id) . '><i class="fa fa-book"></i> Detail</a>';
 
                 $data[] = $row;
             }
@@ -470,7 +631,6 @@ class Konsumen extends BaseController
             'akun'      => $this->akunModel->getAkun(),
             'konverter' => $this->konverter,
         ];
-        // dd($data);
         return view('konsumen/dpd', $data);
     }
 
@@ -484,15 +644,11 @@ class Konsumen extends BaseController
         }
         foreach ($list as $list) {
             $tgl_angsuran = $list->tanggal_angsuran2;
-            $tgl_bayar_terakhir = $list->tanggal;
             $angsuran_ke = $list->angsuran_ke;
-            $tgl_bayar_terakhir = date('Y/m/d', strtotime($list->tanggal));
             $tgl_jt_berikutnya = date('Y/m/d', strtotime((string)'+' . ($angsuran_ke - 1) . ' month', strtotime($tgl_angsuran)));
             $tgl_jt_berikutnya1 = strtotime($tgl_jt_berikutnya);
-            $tgl_bayar_terakhir1 = strtotime($tgl_bayar_terakhir);
 
             $jt = strtotime($list->tanggal_jt);
-            $tgl_jt = date('d', strtotime($list->tanggal_jt));
             $hari_ini = time();
             $dpd = ($hari_ini - $tgl_jt_berikutnya1) / 86400; // 86400 = jumlah detik dalam 1 hari (24 jam)
             if ($hari_ini >= $tgl_jt_berikutnya1 && $hari_ini < $jt && $list->angsuran_ke != 0) {

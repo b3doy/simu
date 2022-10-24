@@ -12,26 +12,26 @@ echo $this->section('content');
                 <thead class="text-sm-center">
                     <tr>
                         <th>#</th>
-                        <th>Tgl Jatuh Tempo</th>
+                        <th>Tgl JT Berikutnya</th>
+                        <th>Terakhir Bayar</th>
                         <th>No Mitra</th>
                         <th>Konsumen</th>
+                        <th>Tgl Angsuran</th>
                         <th>Angsuran</th>
                         <th>Ke</th>
                         <th>DPD</th>
+                        <th>Saldo</th>
                         <th>Sisa Os</th>
-                        <th>Petugas</th>
                     </tr>
                 </thead>
                 <tbody>
 
                 </tbody>
                 <tfoot>
-                    <td colspan="3"></td>
-                    <th>Sub Total : <br>Grand Total : </th>
+                    <td colspan="6">Sub Total : <br>Grand Total : </td>
                     <th></th>
-                    <td colspan="2"></td>
+                    <th colspan="3"></th>
                     <th></th>
-                    <td></td>
                 </tfoot>
             </table>
             <div class=" noprint card-footer">
@@ -65,14 +65,13 @@ echo $this->section('content');
             // Remove the formatting to get integer data for summation
             var intVal = function(i) {
                 return typeof i === 'string' ?
-                    // i.replace(/[\$,]/g, '') * 1 :
-                    parseInt(i.split('Rp.').join('').split('.').join('')) * 1 :
+                    parseInt(i.split('Rp.').join('').split(',').join('')) * 1 :
                     typeof i === 'number' ?
                     i : 0;
             };
             // Total over all pages
             total = api
-                .column(4)
+                .column(6)
                 .data()
                 .reduce(function(a, b) {
                     return intVal(a) + intVal(b);
@@ -80,9 +79,8 @@ echo $this->section('content');
 
             // Total over this page
             pageTotal = api
-                .column(4, {
+                .column(6, {
                     page: 'current'
-                    // search: 'applied'
                 })
                 .data()
                 .reduce(function(a, b) {
@@ -90,13 +88,13 @@ echo $this->section('content');
                 }, 0);
 
             // Update footer
-            $(api.column(4).footer()).html(
-                'Rp ' + desimal(pageTotal) + ',00' + '<br>' + '  Rp ' + desimal(total) + ',00'
+            $(api.column(6).footer()).html(
+                'Rp ' + desimal(pageTotal) + '<br>' + '  Rp ' + desimal(total)
             );
 
             // Total over all pages
             total = api
-                .column(7)
+                .column(10)
                 .data()
                 .reduce(function(c, d) {
                     return intVal(c) + intVal(d);
@@ -104,9 +102,8 @@ echo $this->section('content');
 
             // Total over this page
             pageTotal = api
-                .column(7, {
+                .column(10, {
                     page: 'current'
-                    // search: 'applied'
                 })
                 .data()
                 .reduce(function(c, d) {
@@ -114,8 +111,8 @@ echo $this->section('content');
                 }, 0);
 
             // Update footer
-            $(api.column(7).footer()).html(
-                'Rp ' + desimal(pageTotal) + ',00' + '<br>' + '  Rp ' + desimal(total) + ',00'
+            $(api.column(10).footer()).html(
+                'Rp ' + desimal(pageTotal) + '<br>' + '  Rp ' + desimal(total) + ',00'
             );
         }
     });
